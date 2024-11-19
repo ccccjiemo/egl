@@ -1,2 +1,0 @@
-C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/cache/default/default@HarCompileArkTS/esmodule/debug/egl/Index.ts;&egl/Index&1.0.0;esm;egl|egl|1.0.0|Index.ts;egl;false
-C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/cache/default/default@HarCompileArkTS/esmodule/debug/egl/build/default/generated/profile/default/ModuleInfo.js;&egl/build/default/generated/profile/default/ModuleInfo&1.0.0;esm;egl|egl|1.0.0|build/default/generated/profile/default/ModuleInfo.js;egl;false
