@@ -1,6 +1,7 @@
+```typescript
+
 import { egl, egl10 } from '@jemoc/egl';
 
-```typescript
 let attrib_list: egl.EGLAttribList =
         [egl10.EGL_SURFACE_TYPE, egl10.EGL_WINDOW_BIT,
           egl10.EGL_RED_SIZE, 8,
