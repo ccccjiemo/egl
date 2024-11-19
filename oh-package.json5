@@ -1,11 +1,12 @@
 {
   "name": "@jemoc/egl",
   "version": "0.0.1",
-  "description": "egl简单封装",
+  "description": "基于HarmonyOS 5.0的egl简单封装",
   "main": "Index.ets",
-  "author": "",
+  "author": "ccccjiemo",
   "license": "Apache-2.0",
   "packageType": "InterfaceHar",
+  "repository": "https://github.com/ccccjiemo/egl.git",
   "dependencies": {
     "libegl.so": "file:./src/main/cpp/types/libegl"
   },
