@@ -1,0 +1,1 @@
+{"name":"egl","version":"1.0.0","description":"Please describe the basic information.","author":"","license":"Apache-2.0","packageType":"InterfaceHar","dependencies":{"libegl.so":"file:./src/main/cpp/types/libegl"},"types":"Index.d.ets","artifactType":"obfuscation","metadata":{"byteCodeHar":true}}

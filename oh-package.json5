@@ -1,0 +1,12 @@
+{
+  "name": "@jemoc/egl",
+  "version": "0.0.1",
+  "description": "egl简单封装",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "packageType": "InterfaceHar",
+  "dependencies": {
+    "libegl.so": "file:./src/main/cpp/types/libegl"
+  },
+}

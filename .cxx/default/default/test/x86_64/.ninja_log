@@ -1,0 +1,10 @@
+# ninja log v6
+8	558	7536014048046224	CMakeFiles/egl.dir/napi_init.cpp.o	961d6a6cb3e00c91
+47	629	7536014048452225	CMakeFiles/egl.dir/EGLHelper.cpp.o	124a4fc34be7ce84
+89	701	7536014048869629	CMakeFiles/egl.dir/Ptr.cpp.o	8a95a1ca6751cfdb
+702	915	7536014054991267	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6
+15	215	7536016589016389	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6
+13	201	7536016729212793	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6
+13	207	7536016827333218	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6
+15	233	7536016948318722	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6
+15	229	7536020380146841	C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/build/default/intermediates/cmake/default/obj/x86_64/libegl.so	1b06a2d3f515d9c6

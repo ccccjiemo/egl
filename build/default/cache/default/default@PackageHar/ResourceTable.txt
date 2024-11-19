@@ -1,0 +1,2 @@
+string shared_desc 0x01000000
+profile main_pages 0x01000001

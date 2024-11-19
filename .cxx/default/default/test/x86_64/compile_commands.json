@@ -1,0 +1,20 @@
+[
+{
+  "directory": "C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/.cxx/default/default/test/x86_64",
+  "command": "C:\\PROGRA~1\\Huawei\\DEVECO~1\\sdk\\default\\OPENHA~1\\native\\llvm\\bin\\CLANG_~1.EXE --target=x86_64-linux-ohos --gcc-toolchain=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/llvm\" --sysroot=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/sysroot\" -DOHOS_PLATFORM -Degl_EXPORTS -I\"C:/Program Files/Huawei/DevEco Studio/sdk/default/hms/native/sysroot/usr/include\" -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security   -D__MUSL__ -O0 -g -fno-limit-debug-info  -fPIC -o CMakeFiles\\egl.dir\\napi_init.cpp.o -c C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\napi_init.cpp",
+  "file": "C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\napi_init.cpp",
+  "output": "CMakeFiles\\egl.dir\\napi_init.cpp.o"
+},
+{
+  "directory": "C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/.cxx/default/default/test/x86_64",
+  "command": "C:\\PROGRA~1\\Huawei\\DEVECO~1\\sdk\\default\\OPENHA~1\\native\\llvm\\bin\\CLANG_~1.EXE --target=x86_64-linux-ohos --gcc-toolchain=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/llvm\" --sysroot=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/sysroot\" -DOHOS_PLATFORM -Degl_EXPORTS -I\"C:/Program Files/Huawei/DevEco Studio/sdk/default/hms/native/sysroot/usr/include\" -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security   -D__MUSL__ -O0 -g -fno-limit-debug-info  -fPIC -o CMakeFiles\\egl.dir\\EGLHelper.cpp.o -c C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\EGLHelper.cpp",
+  "file": "C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\EGLHelper.cpp",
+  "output": "CMakeFiles\\egl.dir\\EGLHelper.cpp.o"
+},
+{
+  "directory": "C:/Users/CJF/DevEcoStudioProjects/GLTest/egl/.cxx/default/default/test/x86_64",
+  "command": "C:\\PROGRA~1\\Huawei\\DEVECO~1\\sdk\\default\\OPENHA~1\\native\\llvm\\bin\\CLANG_~1.EXE --target=x86_64-linux-ohos --gcc-toolchain=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/llvm\" --sysroot=\"C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/native/sysroot\" -DOHOS_PLATFORM -Degl_EXPORTS -I\"C:/Program Files/Huawei/DevEco Studio/sdk/default/hms/native/sysroot/usr/include\" -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp -IC:/Users/CJF/DevEcoStudioProjects/GLTest/egl/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security   -D__MUSL__ -O0 -g -fno-limit-debug-info  -fPIC -o CMakeFiles\\egl.dir\\Ptr.cpp.o -c C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\Ptr.cpp",
+  "file": "C:\\Users\\CJF\\DevEcoStudioProjects\\GLTest\\egl\\src\\main\\cpp\\Ptr.cpp",
+  "output": "CMakeFiles\\egl.dir\\Ptr.cpp.o"
+}
+]

@@ -1,0 +1,17 @@
+C:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\native\build-tools\cmake\bin\cmake.exe
+-HC:\Users\CJF\DevEcoStudioProjects\GLTest\egl\src\main\cpp
+-BC:\Users\CJF\DevEcoStudioProjects\GLTest\egl\.cxx\default\default\debug\x86_64
+-DOHOS_ARCH=x86_64
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=C:\Users\CJF\DevEcoStudioProjects\GLTest\egl\build\default\intermediates\cmake\default\obj\x86_64
+-DCMAKE_BUILD_TYPE=Debug
+-DOHOS_SDK_NATIVE=C:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\native
+-DCMAKE_SYSTEM_NAME=OHOS
+-DCMAKE_OHOS_ARCH_ABI=x86_64
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_TOOLCHAIN_FILE=C:\Program Files\Huawei\DevEco Studio\sdk\default\hms\native\build\cmake\hmos.toolchain.cmake
+-GNinja
+-DCMAKE_MAKE_PROGRAM=C:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\native\build-tools\cmake\bin\ninja.exe
+-DCMAKE_FIND_ROOT_PATH=C:\Users\CJF\DevEcoStudioProjects\GLTest\egl\.cxx\default\default\debug\hvigor\x86_64
+-DPACKAGE_FIND_FILE=C:\Users\CJF\DevEcoStudioProjects\GLTest\egl\.cxx\default\default\debug\hvigor\x86_64\summary.cmake
+--no-warn-unused-cli
+-DHMOS_SDK_NATIVE=C:\Program Files\Huawei\DevEco Studio\sdk\default\hms\native
