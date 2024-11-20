@@ -1,6 +1,6 @@
 {
   "name": "@jemoc/egl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "基于HarmonyOS 5.0的egl简单封装",
   "main": "Index.ets",
   "author": "ccccjiemo",
