@@ -1,18 +1,18 @@
-type EGLSurface = string | undefined;
+type EGLSurface = string | null;
 
-type EGLContext = string | undefined;
+type EGLContext = string | null;
 
-type EGLClientBuffer = string | undefined;
+type EGLClientBuffer = string | null;
 
-type EGLNativeDisplayType = string | undefined;
+type EGLNativeDisplayType = string | null;
 
-type EGLDisplay = string | undefined;
+type EGLDisplay = string | null;
 
-type EGLConfig = string | undefined;
+type EGLConfig = string | null;
 
-type EGLNativeWindowType = string | undefined;
+type EGLNativeWindowType = string | null;
 
-type EGLNativePixmapType = string | undefined;
+type EGLNativePixmapType = string | null;
 
 type EGLint = number;
 
@@ -22,9 +22,9 @@ type EGLTime = number;
 
 type EGLAttrib = number;
 
-type EGLSync = string | undefined;
+type EGLSync = string | null;
 
-type EGLImage = string | undefined;
+type EGLImage = string | null;
 
 type EGLAttribList = EGLAttrib[];
 
@@ -46,6 +46,7 @@ export interface EGLAttributeKeyValue {
   value?: EGLint | EGLAttrib;
 }
 
+/*
 export enum EGLError {
   EGL_SUCCESS = 0x3000,
   EGL_NOT_INITIALIZED = 0x3001,
@@ -62,6 +63,7 @@ export enum EGLError {
   EGL_BAD_PARAMETER = 0x300C,
   EGL_BAD_SURFACE = 0x300D,
 }
+*/
 
 /*
 
@@ -178,21 +180,21 @@ export enum EGLBoolean {
   EGL_FALSE = 0
 }
 
-export enum EGLApi {
+/*export enum EGLApi {
   EGL_OPENGL_API = 0x30A2,
   EGL_OPENGL_ES_API = 0x30A0,
   EGL_OPENVG_API = 0x30A1
-}
+}*/
 
-export enum EGLSyncType {
+/*export enum EGLSyncType {
   EGL_SYNC_FENCE = 0x30F9
-}
+}*/
 
 export enum EGLBufferType {
   EGL_OPENVG_IMAGE = 0x3096
 }
 
-export enum EGLImageType {
+/*export enum EGLImageType {
   EGL_GL_TEXTURE_2D = 0x30B1,
   EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x30B3,
   EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x30B4,
@@ -202,7 +204,7 @@ export enum EGLImageType {
   EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x30B8,
   EGL_GL_TEXTURE_3D = 0x30B2,
   EGL_GL_RENDERBUFFER = 0x30B9
-}
+}*/
 
 export function eglGetDisplay(display_id: EGLNativeDisplayType): EGLDisplay;
 
@@ -214,7 +216,7 @@ export function eglChooseConfig(dpy: EGLDisplay, attrib_list: EGLAttribList, con
 export function eglCreateContext(dpy: EGLDisplay, config: EGLConfig, share_context: EGLContext,
   attrib_list: EGLint[]): EGLContext;
 
-export function eglGetError(): EGLError;
+export function eglGetError(): EGLint;
 
 export function eglCreateWindowSurface(dpy: EGLDisplay, config: EGLConfig, win: EGLNativeWindowType,
   attrib_list?: EGLint[]): EGLSurface;
@@ -229,7 +231,8 @@ export function eglDestroyContext(dpy: EGLDisplay, context: EGLContext): EGLBool
 
 export function eglDestroySurface(dpy: EGLDisplay, surface: EGLSurface): EGLBoolean;
 
-export function eglGetConfigAttrib(dpy: EGLDisplay, config: EGLConfig, attr: EGLAttributeKeyValue): EGLBoolean;
+export function eglGetConfigAttrib(dpy: EGLDisplay, config: EGLConfig, attribute: EGLint,
+  value: Int32Array): EGLBoolean;
 
 export function eglGetConfigs(dpy: EGLDisplay, config_size: EGLint, configs: EGLConfig[]): EGLBoolean;
 
@@ -239,11 +242,11 @@ export function eglGetCurrentSurface(readdraw: EGLint): EGLSurface;
 
 export function eglGetProcAddress(procName: string): string;
 
-export function eglQueryContext(dpy: EGLDisplay, context: EGLContext, attribute: EGLAttributeKeyValue): EGLBoolean;
+export function eglQueryContext(dpy: EGLDisplay, context: EGLContext, attribute: EGLint, value: Int32Array): EGLBoolean;
 
 export function eglQueryString(dpy: EGLDisplay, name: EGLint): string;
 
-export function eglQuerySurface(dpy: EGLDisplay, surface: EGLSurface, attribute: EGLAttributeKeyValue): EGLBoolean;
+export function eglQuerySurface(dpy: EGLDisplay, surface: EGLSurface, attribute: EGLint, value: Int32Array): EGLBoolean;
 
 export function eglSwapBuffers(dpy: EGLDisplay, surface: EGLSurface): EGLBoolean;
 
@@ -261,9 +264,9 @@ export function eglSurfaceAttrib(dpy: EGLDisplay, surface: EGLSurface, attribute
 
 export function eglSwapInterval(dpy: EGLDisplay, interval: EGLint): EGLBoolean;
 
-export function eglBindAPI(api: EGLApi): EGLBoolean;
+export function eglBindAPI(api: number): EGLBoolean;
 
-export function eglQueryAPI(): EGLApi;
+export function eglQueryAPI(): number;
 
 export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: EGLenum, buffer: EGLClientBuffer,
   config: EGLConfig, attrib_list?: EGLAttribList): EGLSurface;
@@ -274,26 +277,26 @@ export function eglWaitClient(): EGLBoolean;
 
 export function eglGetCurrentContext(): EGLContext;
 
-export function eglCreateSync(dpy: EGLDisplay, type: EGLSyncType, attrib_list?: EGLAttribList): EGLSync;
+export function eglCreateSync(dpy: EGLDisplay, type: EGLenum, attrib_list?: EGLAttribList): EGLSync;
 
 export function eglDestroySync(dpy: EGLDisplay, sync: EGLSync): EGLBoolean;
 
 export function eglClientWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: EGLint, timeout: EGLTime): EGLint;
 
-export function eglGetSyncAttrib(dpy: EGLDisplay, sync: EGLSync, attribute: EGLAttributeKeyValue): EGLBoolean;
+export function eglGetSyncAttrib(dpy: EGLDisplay, sync: EGLSync, attribute: EGLint, value: BigInt64Array): EGLBoolean;
 
-export function eglCreateImage(dpy: EGLDisplay, context: EGLContext, target: EGLImageType, buffer: EGLClientBuffer,
+export function eglCreateImage(dpy: EGLDisplay, context: EGLContext, target: EGLint, buffer: EGLClientBuffer,
   attrib_list: EGLAttribList): EGLImage;
 
 export function eglDestroyImage(dpy: EGLDisplay, image: EGLImage): EGLBoolean;
 
-export function eglGetPlatformDisplay(platform: EGLenum, native_display: string | undefined,
+export function eglGetPlatformDisplay(platform: EGLenum, native_display: string | null,
   attrib_list?: EGLAttribList): EGLDisplay;
 
-export function eglCreatePlatformWindowSurface(dpy: EGLDisplay, config: EGLConfig, native_window: string | undefined,
+export function eglCreatePlatformWindowSurface(dpy: EGLDisplay, config: EGLConfig, native_window: string | null,
   attrib_list?: EGLAttribList): EGLSurface;
 
-export function eglCreatePlatformPixmapSurface(dpy: EGLDisplay, config: EGLConfig, native_pixmap: string | undefined,
+export function eglCreatePlatformPixmapSurface(dpy: EGLDisplay, config: EGLConfig, native_pixmap: string | null,
   attrib_list?: EGLAttribList): EGLSurface;
 
 export function eglWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: EGLint): EGLBoolean;

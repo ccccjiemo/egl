@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "Ptr.h"
 #include "utils.h"
-#include <egl/egl.h>
+
 
 const char *class_name = "EGL";
 
@@ -75,112 +75,210 @@ void Export(napi_env env, napi_value exports) {
          napi_default, nullptr},
         {"eglSwapBuffersWithDamageEXT", nullptr, NapiEGLSwapBuffersWithDamageEXT, nullptr, nullptr, nullptr,
          napi_default, nullptr},
-        {"EGL_ALPHA_MASK_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_ALPHA_MASK_SIZE ), napi_default, nullptr},
-{"EGL_ALPHA_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_ALPHA_SIZE ), napi_default, nullptr},
-{"EGL_BIND_TO_TEXTURE_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BIND_TO_TEXTURE_RGB ), napi_default, nullptr},
-{"EGL_BIND_TO_TEXTURE_RGBA ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BIND_TO_TEXTURE_RGBA ), napi_default, nullptr},
-{"EGL_BUFFER_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BUFFER_SIZE ), napi_default, nullptr},
-{"EGL_BLUE_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BLUE_SIZE ), napi_default, nullptr},
-{"EGL_RED_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RED_SIZE ), napi_default, nullptr},
-{"EGL_COLOR_BUFFER_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_COLOR_BUFFER_TYPE ), napi_default, nullptr},
-{"EGL_CONFIG_CAVEAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFIG_CAVEAT ), napi_default, nullptr},
-{"EGL_CONFIG_ID ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFIG_ID ), napi_default, nullptr},
-{"EGL_CONFORMANT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFORMANT ), napi_default, nullptr},
-{"EGL_DEPTH_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_DEPTH_SIZE ), napi_default, nullptr},
-{"EGL_GREEN_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GREEN_SIZE ), napi_default, nullptr},
-{"EGL_LEVEL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LEVEL ), napi_default, nullptr},
-{"EGL_LUMINANCE_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LUMINANCE_SIZE ), napi_default, nullptr},
-{"EGL_MATCH_NATIVE_PIXMAP ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MATCH_NATIVE_PIXMAP ), napi_default, nullptr},
-{"EGL_NATIVE_RENDERABLE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NATIVE_RENDERABLE ), napi_default, nullptr},
-{"EGL_MAX_SWAP_INTERVAL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MAX_SWAP_INTERVAL ), napi_default, nullptr},
-{"EGL_MIN_SWAP_INTERVAL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MIN_SWAP_INTERVAL ), napi_default, nullptr},
-{"EGL_SAMPLE_BUFFERS ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SAMPLE_BUFFERS ), napi_default, nullptr},
-{"EGL_SAMPLES ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SAMPLES ), napi_default, nullptr},
-{"EGL_STENCIL_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_STENCIL_SIZE ), napi_default, nullptr},
-{"EGL_RENDERABLE_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RENDERABLE_TYPE ), napi_default, nullptr},
-{"EGL_SURFACE_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SURFACE_TYPE ), napi_default, nullptr},
-{"EGL_TRANSPARENT_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_TYPE ), napi_default, nullptr},
-{"EGL_TRANSPARENT_RED_VALUE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_RED_VALUE ), napi_default, nullptr},
-{"EGL_TRANSPARENT_GREEN_VALUE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_GREEN_VALUE ), napi_default, nullptr},
-{"EGL_TRANSPARENT_BLUE_VALUE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_BLUE_VALUE ), napi_default, nullptr},
-{"EGL_GL_COLORSPACE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_COLORSPACE ), napi_default, nullptr},
-{"EGL_HEIGHT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_HEIGHT ), napi_default, nullptr},
-{"EGL_LARGEST_PBUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LARGEST_PBUFFER ), napi_default, nullptr},
-{"EGL_MIPMAP_TEXTURE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MIPMAP_TEXTURE ), napi_default, nullptr},
-{"EGL_TEXTURE_FORMAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_FORMAT ), napi_default, nullptr},
-{"EGL_TEXTURE_TARGET ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_TARGET ), napi_default, nullptr},
-{"EGL_VG_ALPHA_FORMAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT ), napi_default, nullptr},
-{"EGL_VG_COLORSPACE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE ), napi_default, nullptr},
-{"EGL_WIDTH ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_WIDTH ), napi_default, nullptr},
-{"EGL_SYNC_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_TYPE ), napi_default, nullptr},
-{"EGL_SYNC_STATUS ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_STATUS ), napi_default, nullptr},
-{"EGL_SYNC_CONDITION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_CONDITION ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_LEVEL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_LEVEL ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_ZOFFSET ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_ZOFFSET ), napi_default, nullptr},
-{"EGL_IMAGE_PRESERVED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_IMAGE_PRESERVED ), napi_default, nullptr},
-{"EGL_RENDER_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RENDER_BUFFER ), napi_default, nullptr},
-{"EGL_CONTEXT_MAJOR_VERSION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_MAJOR_VERSION ), napi_default, nullptr},
-{"EGL_CONTEXT_MINOR_VERSION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_MINOR_VERSION ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_PROFILE_MASK ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_PROFILE_MASK ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_DEBUG ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_DEBUG ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_ROBUST_ACCESS ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_ROBUST_ACCESS ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_RESET_NOTIFICATION_STRATEGY ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_RESET_NOTIFICATION_STRATEGY ), napi_default, nullptr},
-{"EGL_CONTEXT_CLIENT_VERSION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_CLIENT_VERSION ), napi_default, nullptr},
-{"EGL_DONT_CARE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_DONT_CARE ), napi_default, nullptr},
-{"EGL_TRUE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRUE ), napi_default, nullptr},
-{"EGL_FALSE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_FALSE ), napi_default, nullptr},
-{"EGL_RGB_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RGB_BUFFER ), napi_default, nullptr},
-{"EGL_LUMINANCE_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LUMINANCE_BUFFER ), napi_default, nullptr},
-{"EGL_NONE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NONE ), napi_default, nullptr},
-{"EGL_SLOW_CONFIG ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SLOW_CONFIG ), napi_default, nullptr},
-{"EGL_NON_CONFORMANT_CONFIG ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NON_CONFORMANT_CONFIG ), napi_default, nullptr},
-{"EGL_OPENGL_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_BIT ), napi_default, nullptr},
-{"EGL_OPENGL_ES_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES_BIT ), napi_default, nullptr},
-{"EGL_OPENGL_ES2_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES2_BIT ), napi_default, nullptr},
-{"EGL_OPENVG_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_BIT ), napi_default, nullptr},
-{"EGL_MULTISAMPLE_RESOLVE_BOX_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MULTISAMPLE_RESOLVE_BOX_BIT ), napi_default, nullptr},
-{"EGL_PBUFFER_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_PBUFFER_BIT ), napi_default, nullptr},
-{"EGL_PIXMAP_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_PIXMAP_BIT ), napi_default, nullptr},
-{"EGL_SWAP_BEHAVIOR_PRESERVED_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SWAP_BEHAVIOR_PRESERVED_BIT ), napi_default, nullptr},
-{"EGL_VG_ALPHA_FORMAT_PRE_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_PRE_BIT ), napi_default, nullptr},
-{"EGL_VG_COLORSPACE_LINEAR_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE_LINEAR_BIT ), napi_default, nullptr},
-{"EGL_WINDOW_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_WINDOW_BIT ), napi_default, nullptr},
-{"EGL_TRANSPARENT_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_RGB ), napi_default, nullptr},
-{"EGL_GL_COLORSPACE_SRGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_COLORSPACE_SRGB ), napi_default, nullptr},
-{"EGL_GL_COLORSPACE_LINEAR ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_COLORSPACE_LINEAR ), napi_default, nullptr},
-{"EGL_NO_TEXTURE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NO_TEXTURE ), napi_default, nullptr},
-{"EGL_TEXTURE_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_RGB ), napi_default, nullptr},
-{"EGL_TEXTURE_RGBA ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_RGBA ), napi_default, nullptr},
-{"EGL_TEXTURE_2D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_2D ), napi_default, nullptr},
-{"EGL_VG_ALPHA_FORMAT_NONPRE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_NONPRE ), napi_default, nullptr},
-{"EGL_VG_ALPHA_FORMAT_PRE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_PRE ), napi_default, nullptr},
-{"EGL_VG_COLORSPACE_sRGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE_sRGB ), napi_default, nullptr},
-{"EGL_VG_COLORSPACE_LINEAR ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE_LINEAR ), napi_default, nullptr},
-{"EGL_SYNC_FENCE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_FENCE ), napi_default, nullptr},
-{"EGL_UNSIGNALED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_UNSIGNALED ), napi_default, nullptr},
-{"EGL_SIGNALED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SIGNALED ), napi_default, nullptr},
-{"EGL_SYNC_PRIOR_COMMANDS_COMPLETE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_PRIOR_COMMANDS_COMPLETE ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_2D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_2D ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Y ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Y ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Z ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Z ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ), napi_default, nullptr},
-{"EGL_GL_TEXTURE_3D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_3D ), napi_default, nullptr},
-{"EGL_GL_RENDERBUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_RENDERBUFFER ), napi_default, nullptr},
-{"EGL_SINGLE_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SINGLE_BUFFER ), napi_default, nullptr},
-{"EGL_BACK_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BACK_BUFFER ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT ), napi_default, nullptr},
-{"EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT ), napi_default, nullptr},
-{"EGL_LOSE_CONTEXT_ON_RESET ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LOSE_CONTEXT_ON_RESET ), napi_default, nullptr},
-{"EGL_NO_RESET_NOTIFICATION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NO_RESET_NOTIFICATION ), napi_default, nullptr},
-{"EGL_OPENVG_IMAGE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_IMAGE ), napi_default, nullptr},
-{"EGL_OPENGL_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_API ), napi_default, nullptr},
-{"EGL_OPENGL_ES_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES_API ), napi_default, nullptr},
-{"EGL_OPENVG_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_API ), napi_default, nullptr},
- 
+        {"EGL_ALPHA_MASK_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_ALPHA_MASK_SIZE),
+         napi_default, nullptr},
+        {"EGL_ALPHA_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_ALPHA_SIZE), napi_default,
+         nullptr},
+        {"EGL_BIND_TO_TEXTURE_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BIND_TO_TEXTURE_RGB),
+         napi_default, nullptr},
+        {"EGL_BIND_TO_TEXTURE_RGBA ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_BIND_TO_TEXTURE_RGBA), napi_default, nullptr},
+        {"EGL_BUFFER_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BUFFER_SIZE), napi_default,
+         nullptr},
+        {"EGL_BLUE_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BLUE_SIZE), napi_default,
+         nullptr},
+        {"EGL_RED_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RED_SIZE), napi_default,
+         nullptr},
+        {"EGL_COLOR_BUFFER_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_COLOR_BUFFER_TYPE),
+         napi_default, nullptr},
+        {"EGL_CONFIG_CAVEAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFIG_CAVEAT),
+         napi_default, nullptr},
+        {"EGL_CONFIG_ID ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFIG_ID), napi_default,
+         nullptr},
+        {"EGL_CONFORMANT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_CONFORMANT), napi_default,
+         nullptr},
+        {"EGL_DEPTH_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_DEPTH_SIZE), napi_default,
+         nullptr},
+        {"EGL_GREEN_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GREEN_SIZE), napi_default,
+         nullptr},
+        {"EGL_LEVEL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LEVEL), napi_default, nullptr},
+        {"EGL_LUMINANCE_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LUMINANCE_SIZE),
+         napi_default, nullptr},
+        {"EGL_MATCH_NATIVE_PIXMAP ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MATCH_NATIVE_PIXMAP),
+         napi_default, nullptr},
+        {"EGL_NATIVE_RENDERABLE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NATIVE_RENDERABLE),
+         napi_default, nullptr},
+        {"EGL_MAX_SWAP_INTERVAL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MAX_SWAP_INTERVAL),
+         napi_default, nullptr},
+        {"EGL_MIN_SWAP_INTERVAL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MIN_SWAP_INTERVAL),
+         napi_default, nullptr},
+        {"EGL_SAMPLE_BUFFERS ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SAMPLE_BUFFERS),
+         napi_default, nullptr},
+        {"EGL_SAMPLES ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SAMPLES), napi_default, nullptr},
+        {"EGL_STENCIL_SIZE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_STENCIL_SIZE), napi_default,
+         nullptr},
+        {"EGL_RENDERABLE_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RENDERABLE_TYPE),
+         napi_default, nullptr},
+        {"EGL_SURFACE_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SURFACE_TYPE), napi_default,
+         nullptr},
+        {"EGL_TRANSPARENT_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_TYPE),
+         napi_default, nullptr},
+        {"EGL_TRANSPARENT_RED_VALUE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_TRANSPARENT_RED_VALUE), napi_default, nullptr},
+        {"EGL_TRANSPARENT_GREEN_VALUE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_TRANSPARENT_GREEN_VALUE), napi_default, nullptr},
+        {"EGL_TRANSPARENT_BLUE_VALUE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_TRANSPARENT_BLUE_VALUE), napi_default, nullptr},
+        {"EGL_GL_COLORSPACE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_COLORSPACE),
+         napi_default, nullptr},
+        {"EGL_HEIGHT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_HEIGHT), napi_default, nullptr},
+        {"EGL_LARGEST_PBUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LARGEST_PBUFFER),
+         napi_default, nullptr},
+        {"EGL_MIPMAP_TEXTURE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_MIPMAP_TEXTURE),
+         napi_default, nullptr},
+        {"EGL_TEXTURE_FORMAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_FORMAT),
+         napi_default, nullptr},
+        {"EGL_TEXTURE_TARGET ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_TARGET),
+         napi_default, nullptr},
+        {"EGL_VG_ALPHA_FORMAT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT),
+         napi_default, nullptr},
+        {"EGL_VG_COLORSPACE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE),
+         napi_default, nullptr},
+        {"EGL_WIDTH ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_WIDTH), napi_default, nullptr},
+        {"EGL_SYNC_TYPE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_TYPE), napi_default,
+         nullptr},
+        {"EGL_SYNC_STATUS ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_STATUS), napi_default,
+         nullptr},
+        {"EGL_SYNC_CONDITION ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_CONDITION),
+         napi_default, nullptr},
+        {"EGL_GL_TEXTURE_LEVEL ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_LEVEL),
+         napi_default, nullptr},
+        {"EGL_GL_TEXTURE_ZOFFSET ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_ZOFFSET),
+         napi_default, nullptr},
+        {"EGL_IMAGE_PRESERVED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_IMAGE_PRESERVED),
+         napi_default, nullptr},
+        {"EGL_RENDER_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RENDER_BUFFER),
+         napi_default, nullptr},
+        {"EGL_CONTEXT_MAJOR_VERSION ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_MAJOR_VERSION), napi_default, nullptr},
+        {"EGL_CONTEXT_MINOR_VERSION ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_MINOR_VERSION), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_PROFILE_MASK ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_PROFILE_MASK), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_DEBUG ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_DEBUG), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_ROBUST_ACCESS ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_ROBUST_ACCESS), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_RESET_NOTIFICATION_STRATEGY ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_RESET_NOTIFICATION_STRATEGY), napi_default, nullptr},
+        {"EGL_CONTEXT_CLIENT_VERSION ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_CLIENT_VERSION), napi_default, nullptr},
+        {"EGL_DONT_CARE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_DONT_CARE), napi_default,
+         nullptr},
+        {"EGL_TRUE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRUE), napi_default, nullptr},
+        {"EGL_FALSE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_FALSE), napi_default, nullptr},
+        {"EGL_RGB_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_RGB_BUFFER), napi_default,
+         nullptr},
+        {"EGL_LUMINANCE_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_LUMINANCE_BUFFER),
+         napi_default, nullptr},
+        {"EGL_NONE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NONE), napi_default, nullptr},
+        {"EGL_SLOW_CONFIG ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SLOW_CONFIG), napi_default,
+         nullptr},
+        {"EGL_NON_CONFORMANT_CONFIG ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_NON_CONFORMANT_CONFIG), napi_default, nullptr},
+        {"EGL_OPENGL_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_BIT), napi_default,
+         nullptr},
+        {"EGL_OPENGL_ES_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES_BIT),
+         napi_default, nullptr},
+        {"EGL_OPENGL_ES2_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES2_BIT),
+         napi_default, nullptr},
+        {"EGL_OPENVG_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_BIT), napi_default,
+         nullptr},
+        {"EGL_MULTISAMPLE_RESOLVE_BOX_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_MULTISAMPLE_RESOLVE_BOX_BIT), napi_default, nullptr},
+        {"EGL_PBUFFER_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_PBUFFER_BIT), napi_default,
+         nullptr},
+        {"EGL_PIXMAP_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_PIXMAP_BIT), napi_default,
+         nullptr},
+        {"EGL_SWAP_BEHAVIOR_PRESERVED_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_SWAP_BEHAVIOR_PRESERVED_BIT), napi_default, nullptr},
+        {"EGL_VG_ALPHA_FORMAT_PRE_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_PRE_BIT), napi_default, nullptr},
+        {"EGL_VG_COLORSPACE_LINEAR_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_VG_COLORSPACE_LINEAR_BIT), napi_default, nullptr},
+        {"EGL_WINDOW_BIT ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_WINDOW_BIT), napi_default,
+         nullptr},
+        {"EGL_TRANSPARENT_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TRANSPARENT_RGB),
+         napi_default, nullptr},
+        {"EGL_GL_COLORSPACE_SRGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_COLORSPACE_SRGB),
+         napi_default, nullptr},
+        {"EGL_GL_COLORSPACE_LINEAR ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_COLORSPACE_LINEAR), napi_default, nullptr},
+        {"EGL_NO_TEXTURE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_NO_TEXTURE), napi_default,
+         nullptr},
+        {"EGL_TEXTURE_RGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_RGB), napi_default,
+         nullptr},
+        {"EGL_TEXTURE_RGBA ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_RGBA), napi_default,
+         nullptr},
+        {"EGL_TEXTURE_2D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_TEXTURE_2D), napi_default,
+         nullptr},
+        {"EGL_VG_ALPHA_FORMAT_NONPRE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_NONPRE), napi_default, nullptr},
+        {"EGL_VG_ALPHA_FORMAT_PRE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_ALPHA_FORMAT_PRE),
+         napi_default, nullptr},
+        {"EGL_VG_COLORSPACE_sRGB ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_VG_COLORSPACE_sRGB),
+         napi_default, nullptr},
+        {"EGL_VG_COLORSPACE_LINEAR ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_VG_COLORSPACE_LINEAR), napi_default, nullptr},
+        {"EGL_SYNC_FENCE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SYNC_FENCE), napi_default,
+         nullptr},
+        {"EGL_UNSIGNALED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_UNSIGNALED), napi_default,
+         nullptr},
+        {"EGL_SIGNALED ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SIGNALED), napi_default,
+         nullptr},
+        {"EGL_SYNC_PRIOR_COMMANDS_COMPLETE ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_SYNC_PRIOR_COMMANDS_COMPLETE), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_2D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_2D),
+         napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_X), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_X), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Y ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Y), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Z ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_POSITIVE_Z), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z), napi_default, nullptr},
+        {"EGL_GL_TEXTURE_3D ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_TEXTURE_3D),
+         napi_default, nullptr},
+        {"EGL_GL_RENDERBUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_GL_RENDERBUFFER),
+         napi_default, nullptr},
+        {"EGL_SINGLE_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_SINGLE_BUFFER),
+         napi_default, nullptr},
+        {"EGL_BACK_BUFFER ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_BACK_BUFFER), napi_default,
+         nullptr},
+        {"EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT), napi_default, nullptr},
+        {"EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT), napi_default, nullptr},
+        {"EGL_LOSE_CONTEXT_ON_RESET ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_LOSE_CONTEXT_ON_RESET), napi_default, nullptr},
+        {"EGL_NO_RESET_NOTIFICATION ", nullptr, nullptr, nullptr, nullptr,
+         NapiCreateInt32(env, EGL_NO_RESET_NOTIFICATION), napi_default, nullptr},
+        {"EGL_OPENVG_IMAGE ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_IMAGE), napi_default,
+         nullptr},
+        {"EGL_OPENGL_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_API), napi_default,
+         nullptr},
+        {"EGL_OPENGL_ES_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENGL_ES_API),
+         napi_default, nullptr},
+        {"EGL_OPENVG_API ", nullptr, nullptr, nullptr, nullptr, NapiCreateInt32(env, EGL_OPENVG_API), napi_default,
+         nullptr},
+
 
     };
 
@@ -189,7 +287,7 @@ void Export(napi_env env, napi_value exports) {
       &cons);
 
       napi_set_named_property(env, exports, class_name, cons);*/
-NapiCreateInt32(env, EGL_SUCCESS);
+    NapiCreateInt32(env, EGL_SUCCESS);
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
 }
 
@@ -356,19 +454,18 @@ napi_value NapiEGLDestroySurface(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLGetConfigAttrib(napi_env env, napi_callback_info info) {
-    size_t argc = 3;
-    napi_value argv[3];
+    size_t argc = 4;
+    napi_value argv[4];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLConfig config = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    EGLint value = 0;
+    void *value = nullptr;
+    napi_get_value_int32(env, argv[2], &attribute);
+    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, 0);
 
-    getAttributeFromObject(env, argv[2], &attribute);
-
-    EGLBoolean r = eglGetConfigAttrib(display, config, attribute, &value);
-    setAttributeFromObject(env, argv[2], value);
+    EGLBoolean r = eglGetConfigAttrib(display, config, attribute, (EGLint *)value);
 
     return NapiCreateInt32(env, r);
 }
@@ -443,18 +540,19 @@ napi_value NapiEGLMakeCurrent(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLQueryContext(napi_env env, napi_callback_info info) {
-    size_t argc = 3;
-    napi_value argv[3];
+    size_t argc = 4;
+    napi_value argv[4];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLContext context = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    EGLint value = 0;
-    getAttributeFromObject(env, argv[2], &attribute);
+    void *value = nullptr;
 
-    EGLBoolean r = eglQueryContext(display, context, attribute, &value);
-    setAttributeFromObject(env, argv[2], value);
+    napi_get_value_int32(env, argv[2], &attribute);
+    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
+
+    EGLBoolean r = eglQueryContext(display, context, attribute, (EGLint *)value);
 
     return NapiCreateInt32(env, r);
 }
@@ -476,18 +574,18 @@ napi_value NapiEGLQueryString(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLQuerySurface(napi_env env, napi_callback_info info) {
-    size_t argc = 3;
-    napi_value argv[3];
+    size_t argc = 4;
+    napi_value argv[4];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLSurface surface = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    EGLint value = 0;
-    getAttributeFromObject(env, argv[2], &attribute);
-    EGLBoolean r = eglQuerySurface(display, surface, attribute, &value);
+    void *value = nullptr;
+    napi_get_value_int32(env, argv[2], &attribute);
+    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
 
-    setAttributeFromObject(env, argv[2], value);
+    EGLBoolean r = eglQuerySurface(display, surface, attribute, (EGLint *)value);
 
     return NapiCreateInt32(env, r);
 }
@@ -671,13 +769,12 @@ napi_value NapiEGLGetSyncAttrib(napi_env env, napi_callback_info info) {
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLSync sync = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    EGLAttrib value = 0;
+    void *value = nullptr;
+    napi_get_value_int32(env, argv[2], &attribute);
+    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
 
-    getAttributeFromObject(env, argv[2], &attribute);
+    EGLBoolean r = eglGetSyncAttrib(display, sync, attribute, (EGLAttrib *)value);
 
-    EGLBoolean r = eglGetSyncAttrib(display, sync, attribute, &value);
-
-    setAttribute64FromObject(env, argv[2], value);
     return NapiCreateInt32(env, r);
 }
 
