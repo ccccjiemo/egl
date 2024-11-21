@@ -1,6 +1,6 @@
 {
   "name": "@jemoc/egl",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "基于api12, 封装egl方法",
   "keywords": ["egl"],
   "homepage": "https://github.com/ccccjiemo/egl.git",
