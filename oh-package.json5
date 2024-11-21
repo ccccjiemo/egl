@@ -1,7 +1,9 @@
 {
   "name": "@jemoc/egl",
-  "version": "0.0.2",
-  "description": "基于HarmonyOS 5.0的egl简单封装",
+  "version": "0.0.3",
+  "description": "基于api12, 封装egl方法",
+  "keywords": ["egl"],
+  "homepage": "https://github.com/ccccjiemo/egl.git",
   "main": "Index.ets",
   "author": "ccccjiemo",
   "license": "Apache-2.0",

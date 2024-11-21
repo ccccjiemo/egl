@@ -20,7 +20,7 @@ let attrib_list: egl.EGLAttribList =
     egl.EGL_GREEN_SIZE, 8,
     egl.EGL_BLUE_SIZE, 8,
     egl.EGL_ALPHA_SIZE, 8,
-    egl.EGL_RENDERABLE_TYPE, egl.EGL_OPENGL_ES2_BIT,
+    egl.EGL_RENDERABLE_TYPE, egl.EGL_OPENGL_ES2_BIT | egl.EGL_OPENGL_ES3_BIT_KHR,
     egl.EGL_NONE];
 
 let display = egl.eglGetDisplay(egl.EGL_DEFAULT_DISPLAY);

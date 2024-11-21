@@ -6,10 +6,8 @@
 
 #ifndef GLSURFACEVIEW_EGLHELPER_H
 #define GLSURFACEVIEW_EGLHELPER_H
-#include <js_native_api.h>
-#include <node_api.h>
-#include <node_api_types.h>
-#include <vector>
+
+#include <napi/native_api.h>
 
 namespace EGL {
 napi_value NapiEGLGetDisplay(napi_env env, napi_callback_info info);
