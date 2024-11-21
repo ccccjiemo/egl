@@ -1,31 +1,35 @@
-import * as EGLBase from 'libegl.so'
+import * as exports from 'libegl.so'
+
+export namespace NativeHelper {
+  export const getWindowFromSurfaceId: (surfaceId: string) => string = exports.getWindowFromSurfaceId;
+}
 
 export namespace egl {
-  export type EGLDisplay = EGLBase.EGLDisplay;
+  export type EGLDisplay = exports.EGLDisplay;
 
-  export type EGLConfig = EGLBase.EGLConfig;
+  export type EGLConfig = exports.EGLConfig;
 
-  export type EGLSurface = EGLBase.EGLSurface;
+  export type EGLSurface = exports.EGLSurface;
 
-  export type EGLContext = EGLBase.EGLContext;
+  export type EGLContext = exports.EGLContext;
 
-  export type EGLNativeWindowType = EGLBase.EGLNativeWindowType;
+  export type EGLNativeWindowType = exports.EGLNativeWindowType;
 
-  export type EGLNativePixmapType = EGLBase.EGLNativePixmapType;
+  export type EGLNativePixmapType = exports.EGLNativePixmapType;
 
-  export type EGLNativeDisplayType = EGLBase.EGLNativeDisplayType;
+  export type EGLNativeDisplayType = exports.EGLNativeDisplayType;
 
-  export type EGLClientBuffer = EGLBase.EGLClientBuffer;
+  export type EGLClientBuffer = exports.EGLClientBuffer;
 
-  export type EGLAttrib = EGLBase.EGLAttrib;
+  export type EGLAttrib = exports.EGLAttrib;
 
-  export type EGLint = EGLBase.EGLint;
+  export type EGLint = exports.EGLint;
 
-  export type EGLSync = EGLBase.EGLSync;
+  export type EGLSync = exports.EGLSync;
 
-  export type EGLTime = EGLBase.EGLTime;
+  export type EGLTime = exports.EGLTime;
 
-  export type EGLImage = EGLBase.EGLImage;
+  export type EGLImage = exports.EGLImage;
 
   export type EGLBoolean = 1 | 0;
 
@@ -96,114 +100,114 @@ export namespace egl {
   }
 
   export const eglChooseConfig: (dpy: EGLDisplay, attrib_list: EGLint[], config_size: EGLint,
-    configs: EGLConfig[]) => EGLBoolean = EGLBase.eglChooseConfig;
+    configs: EGLConfig[]) => EGLBoolean = exports.eglChooseConfig;
 
   export const eglCopyBuffers: (dpy: EGLDisplay, surface: EGLSurface, target: EGLNativePixmapType) => EGLBoolean =
-    EGLBase.eglCopyBuffers;
+    exports.eglCopyBuffers;
 
   export const eglCreateContext: (dpy: EGLDisplay, config: EGLConfig, share_context: EGLContext,
-    attrib_list: EGLint[]) => EGLContext = EGLBase.eglCreateContext;
+    attrib_list: EGLint[]) => EGLContext = exports.eglCreateContext;
 
   export const eglCreatePbufferSurface: (dpy: EGLDisplay, config: EGLConfig, attrib_list?: EGLint[]) => EGLSurface =
-    EGLBase.eglCreatePbufferSurface;
+    exports.eglCreatePbufferSurface;
 
   export const eglCreatePixmapSurface: (dpy: EGLDisplay, config: EGLConfig, pixmap: EGLNativePixmapType,
-    attrib_list?: EGLint[]) => EGLSurface = EGLBase.eglCreatePixmapSurface;
+    attrib_list?: EGLint[]) => EGLSurface = exports.eglCreatePixmapSurface;
 
   export const eglCreateWindowSurface: (dpy: EGLDisplay, config: EGLConfig, win: EGLNativeWindowType,
-    attrib_list?: EGLint[]) => EGLSurface = EGLBase.eglCreateWindowSurface;
+    attrib_list?: EGLint[]) => EGLSurface = exports.eglCreateWindowSurface;
 
-  export const eglDestroyContext: (dpy: EGLDisplay, context: EGLContext) => EGLBoolean = EGLBase.eglDestroyContext;
+  export const eglDestroyContext: (dpy: EGLDisplay, context: EGLContext) => EGLBoolean = exports.eglDestroyContext;
 
-  export const eglDestroySurface: (dpy: EGLDisplay, surface: EGLSurface) => EGLBoolean = EGLBase.eglDestroySurface;
+  export const eglDestroySurface: (dpy: EGLDisplay, surface: EGLSurface) => EGLBoolean = exports.eglDestroySurface;
 
   export const eglGetConfigAttrib: (dpy: EGLDisplay, config: EGLConfig, attribute: EGLint,
-    value: Int32Array) => EGLBoolean = EGLBase.eglGetConfigAttrib;
+    value: Int32Array) => EGLBoolean = exports.eglGetConfigAttrib;
 
   export const eglGetConfigs: (dpy: EGLDisplay, config_size: EGLint, configs: EGLConfig[]) => EGLBoolean =
-    EGLBase.eglGetConfigs;
+    exports.eglGetConfigs;
 
-  export const eglGetCurrentDisplay: () => EGLDisplay = EGLBase.eglGetCurrentDisplay;
+  export const eglGetCurrentDisplay: () => EGLDisplay = exports.eglGetCurrentDisplay;
 
-  export const eglGetCurrentSurface: (readdraw: EGLint) => EGLSurface = EGLBase.eglGetCurrentSurface;
+  export const eglGetCurrentSurface: (readdraw: EGLint) => EGLSurface = exports.eglGetCurrentSurface;
 
-  export const eglGetDisplay: (display_id: EGLNativeDisplayType) => EGLDisplay = EGLBase.eglGetDisplay;
+  export const eglGetDisplay: (display_id: EGLNativeDisplayType) => EGLDisplay = exports.eglGetDisplay;
 
-  export const eglGetError: () => EGLError = EGLBase.eglGetError;
+  export const eglGetError: () => EGLError = exports.eglGetError;
 
-  export const eglGetProcAddress: (procName: string) => string = EGLBase.eglGetProcAddress;
+  export const eglGetProcAddress: (procName: string) => string = exports.eglGetProcAddress;
 
-  export const eglInitialize: (dpy: EGLDisplay, versions: EGLVersion) => EGLBoolean = EGLBase.eglInitialize;
+  export const eglInitialize: (dpy: EGLDisplay, versions: EGLVersion) => EGLBoolean = exports.eglInitialize;
 
   export const eglMakeCurrent: (dpy: EGLDisplay, draw: EGLSurface, read: EGLSurface,
-    context: EGLContext) => EGLBoolean = EGLBase.eglMakeCurrent;
+    context: EGLContext) => EGLBoolean = exports.eglMakeCurrent;
 
   export const eglQueryContext: (dpy: EGLDisplay, context: EGLContext, attribute: EGLint,
-    value: Int32Array) => EGLBoolean = EGLBase.eglQueryContext;
+    value: Int32Array) => EGLBoolean = exports.eglQueryContext;
 
-  export const eglQueryString: (dpy: EGLDisplay, name: EGLint) => string = EGLBase.eglQueryString;
+  export const eglQueryString: (dpy: EGLDisplay, name: EGLint) => string = exports.eglQueryString;
 
   export const eglQuerySurface: (dpy: EGLDisplay, surface: EGLSurface, attribute: EGLint,
-    value: Int32Array) => EGLBoolean = EGLBase.eglQuerySurface;
+    value: Int32Array) => EGLBoolean = exports.eglQuerySurface;
 
-  export const eglSwapBuffers: (dpy: EGLDisplay, surface: EGLSurface) => EGLBoolean = EGLBase.eglSwapBuffers;
+  export const eglSwapBuffers: (dpy: EGLDisplay, surface: EGLSurface) => EGLBoolean = exports.eglSwapBuffers;
 
-  export const eglTerminate: (dpy: EGLDisplay) => EGLBoolean = EGLBase.eglTerminate;
+  export const eglTerminate: (dpy: EGLDisplay) => EGLBoolean = exports.eglTerminate;
 
-  export const eglWaitGL: () => EGLBoolean = EGLBase.eglWaitGL;
+  export const eglWaitGL: () => EGLBoolean = exports.eglWaitGL;
 
-  export const eglWaitNative: (engine: EGLint) => EGLBoolean = EGLBase.eglWaitNative;
+  export const eglWaitNative: (engine: EGLint) => EGLBoolean = exports.eglWaitNative;
 
   export const eglBindTexImage: (dpy: EGLDisplay, surface: EGLSurface, buffer: EGLint) => EGLBoolean =
-    EGLBase.eglBindTexImage;
+    exports.eglBindTexImage;
 
   export const eglReleaseTexImage: (dpy: EGLDisplay, surface: EGLSurface, buffer: EGLint) => EGLBoolean =
-    EGLBase.eglReleaseTexImage;
+    exports.eglReleaseTexImage;
 
   export const eglSurfaceAttrib: (dpy: EGLDisplay, surface: EGLSurface, attribute: EGLint,
-    value: EGLint) => EGLBoolean = EGLBase.eglSurfaceAttrib;
+    value: EGLint) => EGLBoolean = exports.eglSurfaceAttrib;
 
-  export const eglSwapInterval: (dpy: EGLDisplay, interval: EGLint) => EGLBoolean = EGLBase.eglSwapInterval;
+  export const eglSwapInterval: (dpy: EGLDisplay, interval: EGLint) => EGLBoolean = exports.eglSwapInterval;
 
-  export const eglBindAPI: (api: EGLApi) => EGLBoolean = EGLBase.eglBindAPI;
+  export const eglBindAPI: (api: EGLApi) => EGLBoolean = exports.eglBindAPI;
 
-  export const eglQueryAPI: () => EGLApi = EGLBase.eglQueryAPI;
+  export const eglQueryAPI: () => EGLApi = exports.eglQueryAPI;
 
   export const eglCreatePbufferFromClientBuffer: (dpy: EGLDisplay, buftype: EGLBufferType, buffer: EGLClientBuffer,
-    config: EGLConfig, attrib_list?: EGLint[]) => EGLSurface = EGLBase.eglCreatePbufferFromClientBuffer;
+    config: EGLConfig, attrib_list?: EGLint[]) => EGLSurface = exports.eglCreatePbufferFromClientBuffer;
 
-  export const eglReleaseThread: () => EGLBoolean = EGLBase.eglReleaseThread;
+  export const eglReleaseThread: () => EGLBoolean = exports.eglReleaseThread;
 
-  export const eglWaitClient: () => EGLBoolean = EGLBase.eglWaitClient;
+  export const eglWaitClient: () => EGLBoolean = exports.eglWaitClient;
 
-  export const eglGetCurrentContext: () => EGLContext = EGLBase.eglGetCurrentContext;
+  export const eglGetCurrentContext: () => EGLContext = exports.eglGetCurrentContext;
 
   export const eglCreateSync: (dpy: EGLDisplay, type: EGLSyncType, attrib_list?: EGLAttrib[]) => EGLSync =
-    EGLBase.eglCreateSync;
+    exports.eglCreateSync;
 
-  export const eglDestroySync: (dpy: EGLDisplay, sync: EGLSync) => EGLBoolean = EGLBase.eglDestroySync;
+  export const eglDestroySync: (dpy: EGLDisplay, sync: EGLSync) => EGLBoolean = exports.eglDestroySync;
 
   export const eglClientWaitSync: (dpy: EGLDisplay, sync: EGLSync, flags: EGLint, timeout: EGLTime) => EGLint =
-    EGLBase.eglClientWaitSync;
+    exports.eglClientWaitSync;
 
   export const eglGetSyncAttrib: (dpy: EGLDisplay, sync: EGLSync, attribute: EGLint,
-    value: BigInt64Array) => EGLBoolean = EGLBase.eglGetSyncAttrib;
+    value: BigInt64Array) => EGLBoolean = exports.eglGetSyncAttrib;
 
   export const eglCreateImage: (dpy: EGLDisplay, context: EGLContext, target: EGLImageType, buffer: EGLClientBuffer,
-    attrib_list: EGLAttrib[]) => EGLImage = EGLBase.eglCreateImage;
+    attrib_list: EGLAttrib[]) => EGLImage = exports.eglCreateImage;
 
-  export const eglDestroyImage: (dpy: EGLDisplay, image: EGLImage) => EGLBoolean = EGLBase.eglDestroyImage;
+  export const eglDestroyImage: (dpy: EGLDisplay, image: EGLImage) => EGLBoolean = exports.eglDestroyImage;
 
   export const eglGetPlatformDisplay: (platform: EGLPlatform | EGLint, native_display: string | null,
-    attrib_list?: EGLAttrib[]) => EGLDisplay = EGLBase.eglGetPlatformDisplay;
+    attrib_list?: EGLAttrib[]) => EGLDisplay = exports.eglGetPlatformDisplay;
 
   export const eglCreatePlatformWindowSurface: (dpy: EGLDisplay, config: EGLConfig, native_window: string | null,
-    attrib_list?: EGLAttrib[]) => EGLSurface = EGLBase.eglCreatePlatformWindowSurface;
+    attrib_list?: EGLAttrib[]) => EGLSurface = exports.eglCreatePlatformWindowSurface;
 
   export const eglCreatePlatformPixmapSurface: (dpy: EGLDisplay, config: EGLConfig, native_pixmap: string | null,
-    attrib_list?: EGLAttrib[]) => EGLSurface = EGLBase.eglCreatePlatformPixmapSurface;
+    attrib_list?: EGLAttrib[]) => EGLSurface = exports.eglCreatePlatformPixmapSurface;
 
-  export const eglWaitSync: (dpy: EGLDisplay, sync: EGLSync, flags: EGLint) => EGLBoolean = EGLBase.eglWaitSync;
+  export const eglWaitSync: (dpy: EGLDisplay, sync: EGLSync, flags: EGLint) => EGLBoolean = exports.eglWaitSync;
 
   export const EGL_NO_SURFACE: EGLSurface = null;
 

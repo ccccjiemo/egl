@@ -1,11 +1,13 @@
+#include "NativeUtils.hpp"
 #include "egl/EGLHelper.h"
 #include "napi/native_api.h"
-
 
 
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports) {
     EGL::Export(env, exports);
+    NativeUtils::Export(env, exports);
+
 
     napi_property_descriptor desc[] = {
         {"eglChooseConfig", nullptr, nullptr, nullptr, nullptr, nullptr, napi_default, nullptr},
@@ -56,7 +58,7 @@ static napi_value Init(napi_env env, napi_value exports) {
         {"eglCreatePlatformPixmapSurfaceEXT", nullptr, nullptr, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"eglSwapBuffersWithDamageEXT", nullptr, nullptr, nullptr, nullptr, nullptr, napi_default, nullptr},
 
-
+        {"getWindowFromSurfaceId", nullptr, nullptr, nullptr, nullptr, nullptr, napi_default, nullptr},
 
     };
 

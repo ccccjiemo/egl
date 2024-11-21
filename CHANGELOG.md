@@ -25,3 +25,9 @@
 ### Added
 
 - 使用eglChooseConfig配置EGL_RENDERABLE_TYPE时，发现缺少了EGL_OPENGL_ES3_BIT_KHR！！ 添加EXT常量
+
+## [0.0.4] - 2024-11-21
+
+### Added
+
+- 新增getWindowFromSurfaceId方法。

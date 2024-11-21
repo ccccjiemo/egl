@@ -304,5 +304,7 @@ export function eglWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: EGLint): EGLB
 export function eglCreatePixmapSurface(dpy: EGLDisplay, config: EGLConfig, pixmap: EGLNativePixmapType,
   attrib_list?: EGLAttribList): EGLSurface;
 
+export function getWindowFromSurfaceId(surfaceId: string): string;
+
 
 

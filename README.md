@@ -48,7 +48,15 @@ egl.eglGetConfigAttrib(display, config, egl.EGL_ALPHA_SIZE, queryAttribResult);
 ---
 
 ### 可用API
-| API                              | 
+
+#### NativeHelper
+
+| api                    |
+|------------------------|
+| getWindowFromSurfaceId |
+
+#### egl
+| api                              | 
 |----------------------------------| 
 | eglChooseConfig                  |
 | eglCopyBuffers                   |
@@ -94,3 +102,4 @@ egl.eglGetConfigAttrib(display, config, egl.EGL_ALPHA_SIZE, queryAttribResult);
 | eglCreatePlatformWindowSurface   |
 | eglCreatePlatformPixmapSurface   |
 | eglWaitSync                      |
+
