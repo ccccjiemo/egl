@@ -12,7 +12,7 @@
 ## [0.0.2] - 2024-11-20
 
 ### Fixed
-- 更改eglGetConfigAttrib、eglQueryContext、eglQuerySurface、eglGetSyncAttrib等方法可以返回复数返回值(00432a22)
+- 更改eglGetConfigAttrib、eglQueryContext、eglQuerySurface、eglGetSyncAttrib等方法可以返回复数返回值
 
 ### Info
 
@@ -26,7 +26,8 @@
 
 - 使用eglChooseConfig配置EGL_RENDERABLE_TYPE时，发现缺少了EGL_OPENGL_ES3_BIT_KHR！！ 添加EXT常量
 
-## [0.0.4] - 2024-11-21
+---
+## [0.1.0] - 2024-11-22
 
 ### Added
 
