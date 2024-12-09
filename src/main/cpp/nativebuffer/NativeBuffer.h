@@ -7,8 +7,12 @@
 #ifndef GLTEST_NATIVEBUFFER_H
 #define GLTEST_NATIVEBUFFER_H
 
-class NativeBuffer {
+#include "napi/native_api.h"
+namespace NativeBuffer {
+void Export(napi_env env, napi_value exports);
+napi_value NapiCreateNativeBuffer(napi_env env, napi_callback_info info);
+napi_value NapiReleaseNativeBuffer(napi_env env, napi_callback_info info);
+} // namespace NativeBuffer
 
-};
 
-#endif //GLTEST_NATIVEBUFFER_H
+#endif // GLTEST_NATIVEBUFFER_H

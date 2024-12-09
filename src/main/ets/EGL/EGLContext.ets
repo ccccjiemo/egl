@@ -1,6 +1,6 @@
 import { eglGetCurrentContext, eglQueryContext } from 'libegl.so'
 import { EGLDisplay } from './EGLDisplay';
-import { NativePointer } from '../Pointer';
+import { NativePointer } from './Pointer';
 
 export class EGLContext implements NativePointer {
   private _id: string;
@@ -28,11 +28,6 @@ export class EGLContext implements NativePointer {
    * @param attribute EGL_CONFIG_ID / EGL_CONTEXT_CLIENT_TYPE / EGL_CONTEXT_CLIENT_VERSION / EGL_RENDER_BUFFER
    */
   query(dpy: EGLDisplay, attribute: number): number | undefined {
-    let temp = new Int32Array(1);
-    if (!eglQueryContext(dpy.id, this._id, attribute, temp)) {
-      return;
-    }
-
-    return temp[0];
+    return eglQueryContext(dpy.id, this._id, attribute);
   }
 }

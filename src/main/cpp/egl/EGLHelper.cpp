@@ -6,9 +6,11 @@
 
 #include "EGLHelper.h"
 #include "utils.h"
-#include <EGL/egl.h>
+#include <EGl/egl.h>
 #include <EGL/eglext.h>
 #include "Ptr.h"
+#include <multimedia/image_framework/image_pixel_map_napi.h>
+#include <multimedia/image_framework/image/pixelmap_native.h>
 
 namespace EGL {
 
@@ -70,20 +72,18 @@ void Export(napi_env env, napi_value exports) {
          napi_default, nullptr},
         {"eglSwapBuffersWithDamageEXT", nullptr, NapiEGLSwapBuffersWithDamageEXT, nullptr, nullptr, nullptr,
          napi_default, nullptr},
+        {"eglCreateImageKHR", nullptr, NapiEGLCreateImageKHR, nullptr, nullptr, nullptr, napi_default, nullptr},
     };
 
     /*  napi_value cons = nullptr;
       napi_define_class(env, class_name, NAPI_AUTO_LENGTH, nullptr, nullptr, sizeof(desc) / sizeof(desc[0]), desc,
       &cons);
-
       napi_set_named_property(env, exports, class_name, cons);*/
-    NapiCreateInt32(env, EGL_SUCCESS);
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
 }
 
 
 napi_value NapiEGLInitialize(napi_env env, napi_callback_info info) {
-
     size_t argc = 2;
     napi_value argv[2];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -112,29 +112,32 @@ napi_value NapiEGLGetDisplay(napi_env env, napi_callback_info info) {
 
 
 napi_value NapiEGLChooseConfig(napi_env env, napi_callback_info info) {
-    size_t argc = 4;
-    napi_value argv[4];
+    size_t argc = 3;
+    napi_value argv[3];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+
+    napi_value config_list = nullptr;
+    napi_create_array(env, &config_list);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLint *attrib_list = getEGLintList(env, argv[1]);
     EGLint config_size = 0;
-
     napi_get_value_int32(env, argv[2], &config_size);
 
     EGLConfig *configs = new EGLConfig[config_size];
     EGLint num_config = 0;
-    EGLBoolean result = eglChooseConfig(display, attrib_list, configs, config_size, &num_config);
+    if (!eglChooseConfig(display, attrib_list, configs, config_size, &num_config)) {
+        return config_list;
+    }
 
     for (int i = 0; i < num_config; i++) {
         napi_value ptr = Ptr::NapiCreatePtr(env, configs[i]);
-        napi_set_element(env, argv[3], i, ptr);
+        napi_set_element(env, config_list, i, ptr);
     }
 
     freeEGLIntList(&attrib_list);
     delete[] configs;
-
-    return NapiCreateInt32(env, result);
+    return config_list;
 }
 
 napi_value NapiEGLCopyBuffers(napi_env env, napi_callback_info info) {
@@ -144,9 +147,17 @@ napi_value NapiEGLCopyBuffers(napi_env env, napi_callback_info info) {
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLSurface surface = Ptr::NapiGetPtr(env, argv[1]);
-    EGLNativePixmapType target = Ptr::NapiGetPtr(env, argv[2]);
+//     EGLNativePixmapType target = Ptr::NapiGetPtr(env, argv[2]);
 
-    return NapiCreateInt32(env, eglCopyBuffers(display, surface, target));
+//     return NapiCreateInt32(env, eglCopyBuffers(display, surface, target));
+    OH_PixelmapNative *pixelMap = nullptr;
+    OH_PixelmapNative_ConvertPixelmapNativeFromNapi(env, argv[2], &pixelMap);
+//     OHOS::Media::OH_AccessPixels(env, argv[2], &pixelMap);
+    EGLBoolean result = eglCopyBuffers(display, surface, pixelMap);
+
+    int error = eglGetError();
+//     OHOS::Media::OH_UnAccessPixels(env, argv[2]);
+    return NapiCreateInt32(env, result);
 }
 
 napi_value NapiEGLCreateContext(napi_env env, napi_callback_info info) {
@@ -162,7 +173,6 @@ napi_value NapiEGLCreateContext(napi_env env, napi_callback_info info) {
     EGLContext context = eglCreateContext(egl_display, egl_config, share_context, attrib_list);
 
     freeEGLIntList(&attrib_list);
-
     return Ptr::NapiCreatePtr(env, context);
 }
 
@@ -192,13 +202,15 @@ napi_value NapiEGLCreatePbufferSurface(napi_env env, napi_callback_info info) {
 napi_value NapiEGLCreatePixmapSurface(napi_env env, napi_callback_info info) {
     napi_value argv[4];
     size_t argc = 4;
-
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLConfig config = Ptr::NapiGetPtr(env, argv[1]);
-    EGLNativePixmapType pixmap = Ptr::NapiGetPtr(env, argv[2]);
+    OH_PixelmapNative *pixelMap = nullptr;
     EGLint *attrib_list = getEGLintList(env, argv[3]);
+    OH_PixelmapNative_ConvertPixelmapNativeFromNapi(env, argv[2], &pixelMap);
 
-    EGLSurface surface = eglCreatePixmapSurface(display, config, pixmap, attrib_list);
+    EGLSurface surface = eglCreatePixmapSurface(display, config, pixelMap, attrib_list);
+    int error = eglGetError();
     freeEGLIntList(&attrib_list);
 
     return Ptr::NapiCreatePtr(env, surface);
@@ -211,7 +223,7 @@ napi_value NapiEGLCreateWindowSurface(napi_env env, napi_callback_info info) {
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLConfig config = Ptr::NapiGetPtr(env, argv[1]);
-    void *win = Ptr::NapiGetPtr(env, argv[2]);
+    void *win = getNativeWindow(env, argv[2]);
     EGLint *attrib_list = getEGLintList(env, argv[3]);
 
     EGLSurface surface = eglCreateWindowSurface(display, config, static_cast<EGLNativeWindowType>(win), attrib_list);
@@ -244,26 +256,29 @@ napi_value NapiEGLDestroySurface(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLGetConfigAttrib(napi_env env, napi_callback_info info) {
-    size_t argc = 4;
-    napi_value argv[4];
+    size_t argc = 3;
+    napi_value argv[3];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLConfig config = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    void *value = nullptr;
+    EGLint value;
     napi_get_value_int32(env, argv[2], &attribute);
-    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, 0);
 
-    EGLBoolean r = eglGetConfigAttrib(display, config, attribute, (EGLint *)value);
+    if (!eglGetConfigAttrib(display, config, attribute, &value))
+        return nullptr;
 
-    return NapiCreateInt32(env, r);
+    return NapiCreateInt32(env, value);
 }
 
 napi_value NapiEGLGetConfigs(napi_env env, napi_callback_info info) {
-    size_t argc = 3;
-    napi_value argv[3];
+    size_t argc = 2;
+    napi_value argv[2];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+
+    napi_value result = nullptr;
+    napi_create_array(env, &result);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
 
@@ -273,18 +288,20 @@ napi_value NapiEGLGetConfigs(napi_env env, napi_callback_info info) {
     EGLConfig *configs = new EGLConfig[config_size];
     EGLint num_config = 0;
 
-    EGLBoolean r = eglGetConfigs(display, configs, config_size, &num_config);
+    if (!eglGetConfigs(display, configs, config_size, &num_config)) {
+        return nullptr;
+    }
     napi_handle_scope scope = nullptr;
     napi_open_handle_scope(env, &scope);
     for (int i = 0; i < num_config; i++) {
         EGLConfig config = configs[i];
-        napi_set_element(env, argv[2], i, Ptr::NapiCreatePtr(env, config));
+        napi_set_element(env, result, i, Ptr::NapiCreatePtr(env, config));
     }
     napi_close_handle_scope(env, scope);
 
     delete[] configs;
 
-    return NapiCreateInt32(env, r);
+    return result;
 }
 
 napi_value NapiEGLGetCurrentDisplay(napi_env env, napi_callback_info info) {
@@ -330,21 +347,22 @@ napi_value NapiEGLMakeCurrent(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLQueryContext(napi_env env, napi_callback_info info) {
-    size_t argc = 4;
-    napi_value argv[4];
+    size_t argc = 3;
+    napi_value argv[3];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLContext context = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    void *value = nullptr;
+    EGLint value = 0;
 
     napi_get_value_int32(env, argv[2], &attribute);
-    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
 
-    EGLBoolean r = eglQueryContext(display, context, attribute, (EGLint *)value);
+    if (!eglQueryContext(display, context, attribute, &value)) {
+        return nullptr;
+    }
 
-    return NapiCreateInt32(env, r);
+    return NapiCreateInt32(env, value);
 }
 
 napi_value NapiEGLQueryString(napi_env env, napi_callback_info info) {
@@ -364,20 +382,20 @@ napi_value NapiEGLQueryString(napi_env env, napi_callback_info info) {
 }
 
 napi_value NapiEGLQuerySurface(napi_env env, napi_callback_info info) {
-    size_t argc = 4;
-    napi_value argv[4];
+    size_t argc = 3;
+    napi_value argv[3];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLSurface surface = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    void *value = nullptr;
+    EGLint value = 0;
     napi_get_value_int32(env, argv[2], &attribute);
-    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
 
-    EGLBoolean r = eglQuerySurface(display, surface, attribute, (EGLint *)value);
+    if (!eglQuerySurface(display, surface, attribute, &value))
+        return nullptr;
 
-    return NapiCreateInt32(env, r);
+    return NapiCreateInt32(env, value);
 }
 
 napi_value NapiEGLSwapBuffers(napi_env env, napi_callback_info info) {
@@ -559,13 +577,14 @@ napi_value NapiEGLGetSyncAttrib(napi_env env, napi_callback_info info) {
     EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
     EGLSync sync = Ptr::NapiGetPtr(env, argv[1]);
     EGLint attribute = 0;
-    void *value = nullptr;
+    EGLAttrib value = 0;
     napi_get_value_int32(env, argv[2], &attribute);
-    napi_get_typedarray_info(env, argv[3], nullptr, nullptr, &value, nullptr, nullptr);
 
-    EGLBoolean r = eglGetSyncAttrib(display, sync, attribute, (EGLAttrib *)value);
-
-    return NapiCreateInt32(env, r);
+    if (!eglGetSyncAttrib(display, sync, attribute, &value))
+        return nullptr;
+    napi_value result = nullptr;
+    napi_create_int64(env, value, &result);
+    return result;
 }
 
 napi_value NapiEGLCreateImage(napi_env env, napi_callback_info info) {
@@ -656,6 +675,35 @@ napi_value NapiEGLWaitSync(napi_env env, napi_callback_info info) {
     napi_get_value_int32(env, argv[2], &flags);
 
     return NapiCreateInt32(env, eglWaitSync(display, sync, flags));
+}
+
+napi_value NapiEGLCreateImageKHR(napi_env env, napi_callback_info info) {
+    size_t argc = 5;
+    napi_value argv[5];
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+    EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
+    EGLContext context = Ptr::NapiGetPtr(env, argv[1]);
+    int target = 0;
+    napi_get_value_int32(env, argv[2], &target);
+    EGLClientBuffer buffer = Ptr::NapiGetPtr(env, argv[3]);
+    EGLint *attrib_list = getEGLintList(env, argv[4]);
+//     return Ptr::NapiCreatePtr(env, eglCreateImageKHR(display, context, target, buffer, attrib_list));
+    PFNEGLCREATEIMAGEKHRPROC eglcreate = (PFNEGLCREATEIMAGEKHRPROC)eglGetProcAddress("eglCreateImageKHR");
+    auto result = eglcreate(display, context, target, buffer, attrib_list);
+    return Ptr::NapiCreatePtr(env, result);
+}
+
+napi_value NapiEGLDestroyImageKHR(napi_env env, napi_callback_info info) {
+    size_t argc = 2;
+    napi_value argv[2];
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+    EGLDisplay display = Ptr::NapiGetPtr(env, argv[0]);
+    EGLImageKHR image = Ptr::NapiGetPtr(env, argv[1]);
+
+    PFNEGLDESTROYIMAGEKHRPROC egldestroy = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
+
+
+    return NapiCreateInt32(env, egldestroy(display, image));
 }
 
 napi_value NapiEGLCreatePlatformWindowSurfaceEXT(napi_env env, napi_callback_info info) { return nullptr; }

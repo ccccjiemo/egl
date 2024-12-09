@@ -10,52 +10,83 @@ ohpm install @jemoc/egl
 
 ### 基础用法
 
+#### 0.2.0
+
 ```typescript
+//surfaceId获取
 
-import { egl } from '@jemoc/egl';
+let display = egl.EGLDisplay.getDisplay();
+//let display = egl.eglGetDisplay(egl.EGL_DEFAULT_DISPLAY);
+//let display = egl.eglGetDisplay();
 
-let attrib_list: egl.EGLAttribList =
-  [egl.EGL_SURFACE_TYPE, egl.EGL_WINDOW_BIT,
-    egl.EGL_RED_SIZE, 8,
-    egl.EGL_GREEN_SIZE, 8,
-    egl.EGL_BLUE_SIZE, 8,
-    egl.EGL_ALPHA_SIZE, 8,
-    egl.EGL_RENDERABLE_TYPE, egl.EGL_OPENGL_ES2_BIT | egl.EGL_OPENGL_ES3_BIT_KHR,
-    egl.EGL_NONE];
+display?.initialize();
+let major = display.major;
+let minor = display.minor;
+//let versions = egl.eglInitialize(display);
+//let major = versions.major;
+//let minor = version.minor;
 
-let display = egl.eglGetDisplay(egl.EGL_DEFAULT_DISPLAY);
+let attrib_list = [
+  egl.EGL_SURFACE_TYPE, egl.EGL_WINDOW_BIT,
+  egl.EGL_RED_SIZE, 8,
+  egl.EGL_GREEN_SIZE, 8,
+  egl.EGL_BLUE_SIZE, 8,
+  egl.EGL_ALPHA_SIZE, 8,
+  egl.EGL_RENDERABLE_TYPE, egl.EGL_OPENGL_ES2_BIT | egl.EGL_OPENGL_ES3_BIT_KHR,
+  egl.EGL_NONE];
 
-let version: egl.EGLVersion = {};
-egl.eglInitialize(display, version);
+//请求数量不输入默认是1
+let configs = display?.chooseConfig([
+  egl.EGL_SURFACE_TYPE, egl.EGL_WINDOW_BIT,
+  egl.EGL_RED_SIZE, 8,
+  egl.EGL_GREEN_SIZE, 8,
+  egl.EGL_BLUE_SIZE, 8,
+  egl.EGL_ALPHA_SIZE, 8,
+  egl.EGL_RENDERABLE_TYPE, egl.EGL_OPENGL_ES2_BIT | egl.EGL_OPENGL_ES3_BIT_KHR,
+  egl.EGL_NONE], 1);
+//egl.eglChooseConfig(display, attrib_list,1);
 
-//获取egl config
-let configs: egl.EGLConfig[] = new Array<egl.EGLConfig>(2);
-egl.eglChooseConfig(display, attrib_list, 2, configs);
+let config = configs![0];
+let read_size = config.getConfigAttrib(display, egl.EGL_RED_SIZE);
+//let read_size = egl.eglGetConfigAttrib(display, config, egl.EGL_RED_SIZE);
 
-let eglAttrib: egl.EGLint[] = [egl.EGL_CONTEXT_CLIENT_VERSION, 2, egl.EGL_NONE];
+let context =
+  display?.createContext(config, egl.EGL_NO_CONTEXT, [egl.EGL_CONTEXT_CLIENT_VERSION, 2, egl.EGL_NONE]);
+//let context = egl.eglCreateContext(display, config, egl.EGL_NO_CONTEXT, [egl.EGL_CONTEXT_CLIENT_VERSION, 2, egl.EGL_NONE]);
 
-//获取egl context
-let context = egl.eglCreateContext(display, configs[0], egl.EGL_NO_CONTEXT, eglAttrib);
+let version = context?.query(display, egl.EGL_CONTEXT_CLIENT_VERSION);
+let surface = display?.createSurfaceWindow(config, surfaceId);
+let pixelMalHeight = surface?.query(display, egl.EGL_HEIGHT);
 
-let success = egl.eglMakeCurrent(display, egl.EGL_NO_SURFACE, egl.EGL_NO_SURFACE, context);
+//绘制工作
+display.swapBuffers(surface);
+//egl.eglSwapBuffers(display, surface);
 
-//获取attribute信息
-let queryAttribResult = new Int32Array(1);
-egl.eglGetConfigAttrib(display, config, egl.EGL_ALPHA_SIZE, queryAttribResult);
+
+//0.2.0新增 
+let buffer = egl.NativeBuffer.createNativeBuffer({
+  width: 1000,
+  height: 1000,
+  usage: egl.NativeBufferUsage.HW_TEXTURE,
+  stride: 4,
+  format: egl.NativeBufferFormat.RGBA_8888
+})
+let image: egl.EGLImageKHR | undefined = display?.createImageKHR(egl.EGL_GL_TEXTURE_2D_KHR, context, buffer, [egl.EGL_NONE]);
+buffer?.release();
+display?.destroyImageKHR(image)
+//OHNativeBuffer的操作需要开发者自己需求开发napi方法 buffer.id可以获取对象指针字符串，native侧将字符串转成指针
 ```
-
+---
+### 已知问题
+- 模拟器获取surface仅支持window和pbuffer，不知道是不是api不支持，但api中对pixelmap操作都不报错 
+- api12的egl扩展库签名识别不正确，napi中无法调用扩展方法和编译，只能通过eglGetProcAddress方式调用。
 
 ---
 
 ### 可用API
 
-#### NativeHelper
-
-| api                    |
-|------------------------|
-| getWindowFromSurfaceId |
-
 #### egl
+
 | api                              | 
 |----------------------------------| 
 | eglChooseConfig                  |
@@ -96,10 +127,10 @@ egl.eglGetConfigAttrib(display, config, egl.EGL_ALPHA_SIZE, queryAttribResult);
 | eglDestroySync                   |
 | eglClientWaitSync                |
 | eglGetSyncAttrib                 |
-| eglCreateImage                   |
-| eglDestroyImage                  |
 | eglGetPlatformDisplay            |
 | eglCreatePlatformWindowSurface   |
 | eglCreatePlatformPixmapSurface   |
 | eglWaitSync                      |
+| eglCreateImageKHR                |
+| eglDestroyImageKHR               |
 

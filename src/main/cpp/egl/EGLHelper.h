@@ -49,6 +49,7 @@ napi_value NapiEGLDestroySync(napi_env env, napi_callback_info info);
 napi_value NapiEGLClientWaitSync(napi_env env, napi_callback_info info);
 napi_value NapiEGLGetSyncAttrib(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreateImage(napi_env env, napi_callback_info info);
+napi_value NapiEGLCreateImageKHR(napi_env env, napi_callback_info info);
 napi_value NapiEGLDestroyImage(napi_env env, napi_callback_info info);
 napi_value NapiEGLGetPlatformDisplay(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreatePlatformWindowSurface(napi_env env, napi_callback_info info);
@@ -57,7 +58,7 @@ napi_value NapiEGLWaitSync(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreatePlatformWindowSurfaceEXT(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreatePlatformPixmapSurfaceEXT(napi_env env, napi_callback_info info);
 napi_value NapiEGLSwapBuffersWithDamageEXT(napi_env env, napi_callback_info info);
-
+napi_value NapiEGLDestroyImageKHR(napi_env env, napi_callback_info info);
 void Export(napi_env env, napi_value exports);
 } // namespace EGL
 

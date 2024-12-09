@@ -5,6 +5,8 @@
 
 
 namespace NativeUtils {
+
+
 napi_value NapiGetWindowFromSurfaceId(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value argv[1];

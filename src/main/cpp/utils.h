@@ -8,17 +8,40 @@
 #define GLSURFACEVIEW_UTILS_H
 
 #include <EGL/egl.h>
+#include <cstdlib>
 #include <js_native_api.h>
 #include <js_native_api_types.h>
+#include <native_window/external_window.h>
 
-EGLint *getEGLintList(napi_env env, napi_value val) {
+static OHNativeWindow *getNativeWindow(napi_env env, napi_value value) {
+    size_t size = 32;
+    char *str = new char[size];
+    napi_get_value_string_utf8(env, value, str, size, &size);
+
+    uint64_t surfaceId = atoll(str);
+    OHNativeWindow *window = nullptr;
+
+    OH_NativeWindow_CreateNativeWindowFromSurfaceId(surfaceId, &window);
+    return window;
+}
+
+static EGLint *getEGLintList(napi_env env, napi_value val) {
     bool is_array = false;
     napi_is_array(env, val, &is_array);
-    if (!is_array)
-        return nullptr;
-    
+    if (!is_array) {
+        EGLint *list = new EGLint[1];
+        list[0] = EGL_NONE;
+        return list;
+    }
+
     uint32_t length;
     napi_get_array_length(env, val, &length);
+
+    if (length == 0) {
+        EGLint *list = new EGLint[1];
+        list[0] = EGL_NONE;
+        return list;
+    }
 
     EGLint *attrib_list = new EGLint[length];
 
@@ -39,7 +62,7 @@ EGLint *getEGLintList(napi_env env, napi_value val) {
     return attrib_list;
 }
 
-EGLAttrib *getEGLAttribList(napi_env env, napi_value val) {
+static EGLAttrib *getEGLAttribList(napi_env env, napi_value val) {
     bool is_array = false;
     napi_is_array(env, val, &is_array);
     if (!is_array)
@@ -67,14 +90,14 @@ EGLAttrib *getEGLAttribList(napi_env env, napi_value val) {
     return attrib_list;
 }
 
-void freeEGLAttribList(EGLAttrib **list) {
+static void freeEGLAttribList(EGLAttrib **list) {
     if (*list != nullptr) {
         delete[] *list;
         *list = nullptr;
     }
 }
 
-void freeEGLIntList(EGLint **list) {
+static void freeEGLIntList(EGLint **list) {
     if (*list != nullptr) {
         delete[] *list;
         *list = nullptr;
@@ -82,7 +105,7 @@ void freeEGLIntList(EGLint **list) {
 }
 
 
-void getAttributeFromObject(napi_env env, napi_value obj, EGLint *attribute) {
+static void getAttributeFromObject(napi_env env, napi_value obj, EGLint *attribute) {
     napi_valuetype type;
     napi_typeof(env, obj, &type);
     if (type != napi_object)
@@ -93,23 +116,29 @@ void getAttributeFromObject(napi_env env, napi_value obj, EGLint *attribute) {
     napi_get_value_int32(env, napi_attrib, attribute);
 }
 
-void setAttributeFromObject(napi_env env, napi_value obj, EGLint value) {
+static void setAttributeFromObject(napi_env env, napi_value obj, EGLint value) {
     napi_value val = nullptr;
     napi_create_int32(env, value, &val);
     napi_set_named_property(env, obj, "value", val);
 }
 
-void setAttribute64FromObject(napi_env env, napi_value obj, EGLAttrib value) {
+static void setAttribute64FromObject(napi_env env, napi_value obj, EGLAttrib value) {
     napi_value val = nullptr;
     napi_create_int64(env, value, &val);
     napi_set_named_property(env, obj, "value", val);
 }
 
-napi_value NapiCreateInt32(napi_env env, EGLint value) {
+static napi_value NapiCreateInt32(napi_env env, EGLint value) {
     napi_value result = nullptr;
     napi_create_int32(env, value, &result);
     return result;
 }
 
+static void createFunction(napi_env env, napi_value exports, const char *funName, napi_callback function) {
+    napi_value func = nullptr;
+    napi_create_function(env, funName, NAPI_AUTO_LENGTH, function, nullptr, &func);
 
-#endif //GLSURFACEVIEW_UTILS_H
+    napi_set_named_property(env, exports, funName, func);
+}
+
+#endif // GLSURFACEVIEW_UTILS_H

@@ -4,10 +4,11 @@ import { EGLConfig } from './EGLConfig'
 import { EGLContext } from './EGLContext';
 import { EGLSurface } from './EGLSurface';
 import { EGLSync } from './EGLSync'
-import { NativeHelper } from '../NativeHelperr';
 import { HashMap } from '@kit.ArkTS';
 import { egl } from '../Index'
-import { NativePointer } from '../Pointer';
+import { NativePointer } from './Pointer';
+import { EGLImageKHR } from './EGLImage';
+import { image } from '@kit.ImageKit';
 
 export interface EGLVersion {
   major: number,
@@ -188,14 +189,9 @@ export class EGLDisplay implements NativePointer {
    */
   chooseConfig(attrib_list: number[], count?: number): EGLConfig[] {
     this.ensureInit();
-    let configs: string[] = [];
     let result: EGLConfig[] = [];
-    let isSuccess = EGL.eglChooseConfig(this._id, attrib_list, count ?? 1, configs);
-    if (!isSuccess) {
-      return result;
-    }
-
-    configs.forEach(id => {
+    let config_id_list = EGL.eglChooseConfig(this._id, attrib_list, count ?? 1);
+    config_id_list.forEach(id => {
       result.push(new EGLConfig(id));
     })
     return result;
@@ -228,8 +224,7 @@ export class EGLDisplay implements NativePointer {
    */
   createSurfaceWindow(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
-    let win: string = NativeHelper.getWindowFromSurfaceId(surfaceId);
-    let surface_id = EGL.eglCreateWindowSurface(this._id, config.id, win, attrib_list ?? []);
+    let surface_id = EGL.eglCreateWindowSurface(this._id, config.id, surfaceId, attrib_list ?? []);
     if (!surface_id) {
       return;
     }
@@ -291,27 +286,20 @@ export class EGLDisplay implements NativePointer {
   /**
    *对应eglGetConfigs
    */
-  getConfigs(count: number): EGLConfig[] | undefined {
+  getConfigs(count: number): EGLConfig[] {
     this.ensureInit();
     if (count < 1) {
-      throw Error('getConfigs: count必须大于0');
+      count = 1;
     }
-    let config_result: string[] = [];
+    let config_result: string[] = EGL.eglGetConfigs(this._id, count);
     let configs: EGLConfig[] = [];
-    if (EGL.eglGetConfigs(this._id, count, config_result)) {
-      for (let i = 0; i < count; i++) {
-        if (config_result[i] == undefined) {
-          continue;
-        }
-        if (config_result[i].length == 0) {
-          continue;
-        }
-        let config = new EGLConfig(config_result[i]);
-        configs.push(config);
-      }
-      return configs;
-    }
-    return;
+
+    config_result.forEach(id => {
+      configs.push(new EGLConfig(id));
+    })
+
+    return configs;
+
   }
 
   /**
@@ -375,11 +363,7 @@ export class EGLDisplay implements NativePointer {
    */
   getSyncAttrib(sync: EGLSync, attribute: number): number | undefined {
     this.ensureInit();
-    let temp = new BigInt64Array(1);
-    if (EGL.eglGetSyncAttrib(this._id, sync.id, attribute, temp)) {
-      return Number(temp[0]);
-    }
-    return;
+    return EGL.eglGetSyncAttrib(this._id, sync.id, attribute);
   }
 
   /**
@@ -425,7 +409,37 @@ export class EGLDisplay implements NativePointer {
    *https://registry.khronos.org/EGL/sdk/docs/man/html/eglCreateImage.xhtml
    * @parm attr_list EGL_GL_TEXTURE_LEVEL / EGL_GL_TEXTURE_ZOFFSET / EGL_IMAGE?PRESERVER
    */
-  createImage(context: EGLContext, target: egl.EGLImageType, attrib_list?: number[]) {
+  createImageKHR(target: number, context: EGLContext, buffer?: NativePointer,
+    attrib_list?: number[]): EGLImageKHR | undefined {
+    this.ensureInit();
+    let result = EGL.eglCreateImageKHR(this._id, context.id, target, buffer?.id, attrib_list ?? [egl.EGL_NONE]);
+    if (result) {
+      return new EGLImageKHR(result);
+    }
+    return;
+  }
 
+  destroyImageKHR(image: EGLImageKHR): boolean {
+    return EGL.eglDestroyImageKHR(this._id, image.id);
+  }
+
+
+  /**
+   *个人测试不报错，但是拷贝不成功
+   */
+  copyBuffers(surface: EGLSurface, target: image.PixelMap): boolean {
+    return EGL.eglCopyBuffers(this._id, surface.id, target);
+  }
+
+  /**
+   * 模拟器不支持pixmap,有真机大佬帮我测试下吗
+   */
+  createPixmapSurface(config: EGLConfig, pixmap: image.PixelMap, attrib_list?: number[]): EGLSurface | undefined {
+    this.ensureInit();
+    let surface_id = EGL.eglCreatePixmapSurface(this._id, config.id, pixmap, attrib_list ?? [egl.EGL_NONE]);
+    if (!surface_id) {
+      return;
+    }
+    return new EGLSurface(surface_id);
   }
 }

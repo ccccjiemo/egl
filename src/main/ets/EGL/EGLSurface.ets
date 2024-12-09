@@ -1,7 +1,7 @@
-import { eglGetCurrentSurface, eglSurfaceAttrib, eglBindTexImage, eglReleaseTexImage } from 'libegl.so'
+import { eglGetCurrentSurface, eglSurfaceAttrib, eglBindTexImage, eglReleaseTexImage, eglQuerySurface } from 'libegl.so'
 import { EGLDisplay } from './EGLDisplay';
 import { egl } from '../Index'
-import { NativePointer } from '../Pointer';
+import { NativePointer } from './Pointer';
 
 
 export class EGLSurface implements NativePointer {
@@ -28,6 +28,10 @@ export class EGLSurface implements NativePointer {
    */
   setAttribute(dpy: EGLDisplay, attribute: number, value: number): boolean {
     return eglSurfaceAttrib(dpy.id, this._id, attribute, value);
+  }
+
+  query(dpy: EGLDisplay, attribute: number): number | undefined {
+    return eglQuerySurface(dpy.id, this._id, attribute);
   }
 
 

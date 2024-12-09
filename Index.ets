@@ -1,3 +1,1 @@
-export { egl, NativeHelper } from './src/main/ets/Index'
-
-
+export { egl } from './src/main/ets/Index'

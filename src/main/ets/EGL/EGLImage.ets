@@ -1,7 +1,7 @@
 import { NativePointer } from "./Pointer";
 
-export class EGLSync implements NativePointer {
-  private _id: string
+export class EGLImageKHR implements NativePointer {
+  private readonly _id: string;
 
   constructor(id: string) {
     this._id = id;
