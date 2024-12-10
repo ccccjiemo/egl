@@ -14,6 +14,8 @@ declare namespace egl {
    * 创建一个OHNativeBuffer,使用完记得释放，对OHNativeBuffer的操作需要开发者实现napi
    */
   class NativeBuffer implements NativePointer {
+    private constructor();
+
     get id(): string;
 
     /***
@@ -25,6 +27,8 @@ declare namespace egl {
   }
 
   class EGLConfig implements NativePointer {
+    private constructor();
+
     get id(): string;
 
     /**
@@ -34,6 +38,8 @@ declare namespace egl {
   }
 
   class EGLContext implements NativePointer {
+    private constructor();
+
     get id(): string;
 
     static getCurrentContext(): EGLContext | undefined;
@@ -47,6 +53,8 @@ declare namespace egl {
   }
 
   class EGLSurface implements NativePointer {
+    private constructor();
+
     get id(): string;
 
 
@@ -71,14 +79,20 @@ declare namespace egl {
   }
 
   class EGLSync implements NativePointer {
+    private constructor();
+
     get id(): string;
   }
 
   class EGLImageKHR implements NativePointer {
+    private constructor();
+
     get id(): string;
   }
 
   class EGLDisplay implements NativePointer {
+    private constructor();
+
     /**
      * 获取EGLDisplay对象
      * @param eglNativeDisplayType 输入undefined获取default display
