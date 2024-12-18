@@ -14,7 +14,7 @@ ohpm install @jemoc/egl
 
 ```typescript
 //surfaceId获取
-
+//EGLDisplay使用完后必须调用terminate，
 let display = egl.EGLDisplay.getDisplay();
 //let display = egl.eglGetDisplay(egl.EGL_DEFAULT_DISPLAY);
 //let display = egl.eglGetDisplay();

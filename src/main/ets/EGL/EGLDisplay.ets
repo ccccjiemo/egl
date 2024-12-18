@@ -179,6 +179,9 @@ export class EGLDisplay implements NativePointer {
       return true;
     }
     let result = EGL.eglTerminate(this._id);
+    if (result) {
+      EGLDisplay._display_cache.remove(this._id);
+    }
     this._isTerminate = result;
     return result;
   }

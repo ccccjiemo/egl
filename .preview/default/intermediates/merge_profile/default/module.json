@@ -5,9 +5,9 @@
 		"versionCode": 1000000,
 		"versionName": "1.0.0",
 		"minAPIVersion": 50000012,
-		"targetAPIVersion": 50000012,
+		"targetAPIVersion": 50001013,
 		"apiReleaseType": "Release",
-		"compileSdkVersion": "5.0.0.71",
+		"compileSdkVersion": "5.0.1.112",
 		"compileSdkType": "HarmonyOS",
 		"appEnvironments": [],
 		"bundleType": "app"

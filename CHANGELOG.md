@@ -1,3 +1,6 @@
+## [0.2.1] - 2024-12-18
+- 修复EGLDisplay调用terminate错误
+---
 ## [0.2.0] - 2024-12-9
 
 - 删除eglCreateImage(实在是不知道怎么创建EGLImage)

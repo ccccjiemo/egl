@@ -134,7 +134,6 @@ napi_value NapiEGLChooseConfig(napi_env env, napi_callback_info info) {
         napi_value ptr = Ptr::NapiCreatePtr(env, configs[i]);
         napi_set_element(env, config_list, i, ptr);
     }
-
     freeEGLIntList(&attrib_list);
     delete[] configs;
     return config_list;
