@@ -1,11 +1,91 @@
+#include "EGLConfig.h"
+#include "EGLContext.h"
+#include "EGLDisplay.h"
+#include "EGLSurface.h"
 #include "NativeUtils.hpp"
-#include "egl/EGLHelper.h"
+#include "EGLHelper.h"
 #include "napi/native_api.h"
-#include "nativebuffer/NativeBuffer.h"
+#include "NativeBuffer.h"
+#include "utils.h"
+
+//     napi_value eglConfigCons = nullptr;
+//     napi_define_sendable_class(env, "EGLConfig", NAPI_AUTO_LENGTH, StandardEGLConfig::JSConstructor, nullptr,
+//                                sizeof(eglConfigDesc) / sizeof(eglConfigDesc[0]), eglConfigDesc, nullptr,
+//                                &eglConfigCons);
+//     napi_create_reference(env, eglConfigCons, 1, &StandardEGLConfig::cons);
+//     napi_set_named_property(env, exports, "EGLConfig", eglConfigCons);
+
+//     napi_value eglDisplayCons = nullptr;
+//     napi_define_sendable_class(env, "EGLDisplay", NAPI_AUTO_LENGTH, StandardEGLDisplay::JSConstructor, nullptr,
+//                                sizeof(eglDisplayDesc) / sizeof(eglDisplayDesc[0]), eglDisplayDesc, nullptr,
+//                                &eglDisplayCons);
+//     napi_create_reference(env, eglDisplayCons, 1, &StandardEGLDisplay::cons);
+//     napi_set_named_property(env, exports, "EGLDisplay", eglDisplayCons);
 
 
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports) {
+    /***
+     * define eglDisplay
+     */
+    napi_property_descriptor eglDisplayDesc[] = {
+        DefineFunction("getDisplay", StandardEGLDisplay::JSGetDisplay),
+        DefineFunction("getCurrentDisplay", StandardEGLDisplay::JSGetCurrentDisplay),
+        DefineFunction("getPlatformDisplay", StandardEGLDisplay::JSGetPlatformDisplay),
+        DefineFunction("terminate", StandardEGLDisplay::JSTerminate),
+        DefineFunction("initialize", StandardEGLDisplay::JSInitialize),
+        DefineFunction("chooseConfig", StandardEGLDisplay::JSChooseConfig),
+        DefineFunction("createContext", StandardEGLDisplay::JSCreateContext),
+        DefineFunction("createWindowSurface", StandardEGLDisplay::JSCreateWindowSurface),
+        DefineFunction("makeCurrent", StandardEGLDisplay::JSMakeCurrent),
+        DefineFunction("createPbufferSurface", StandardEGLDisplay::JSCreatePbufferSurface),
+        DefineFunction("destroyContext", StandardEGLDisplay::JSDestroyContext),
+        DefineFunction("destroySurface", StandardEGLDisplay::JSDestroySurface),
+        DefineFunction("getConfigs", StandardEGLDisplay::JSGetConfigs),
+        DefineFunction("queryString", StandardEGLDisplay::JSQueryString),
+        DefineFunction("swapBuffers", StandardEGLDisplay::JSSwapBuffers),
+        DefineFunction("createSync", StandardEGLDisplay::JSCreateSync),
+        DefineFunction("destroySync", StandardEGLDisplay::JSDestroySync),
+        DefineFunction("clientWaitSync", StandardEGLDisplay::JSClientWaitSync),
+        DefineFunction("waitSync", StandardEGLDisplay::JSWaitSync),
+        DefineFunction("getSyncAttrib", StandardEGLDisplay::JSGetSyncAttrib),
+        DefineFunction("swapInterval", StandardEGLDisplay::JSSwapInterval),
+    };
+
+    DefineSendableClass(env, exports, "EGLDisplay", StandardEGLDisplay::JSConstructor, eglDisplayDesc,
+                        &StandardEGLDisplay::cons);
+
+    /***
+     * define eglConfig
+     */
+    napi_property_descriptor eglConfigDesc[] = {
+        DefineFunction("getConfigAttrib", StandardEGLConfig::JSGetConfigAttrib),
+    };
+    DefineSendableClass(env, exports, "EGLConfig", StandardEGLConfig::JSConstructor, eglConfigDesc,
+                        &StandardEGLConfig::cons);
+
+    /***
+     * define eglContext
+     */
+    napi_property_descriptor eglContextDesc[] = {
+        DefineFunction("getCurrentContext", StandardEGLContext::JSGetCurrentContext),
+        DefineFunction("query", StandardEGLContext::JSQuery),
+    };
+    DefineSendableClass(env, exports, "EGLContext", StandardEGLContext::JSConstructor, eglContextDesc,
+                        &StandardEGLContext::cons);
+
+    /***
+     * define eglSurface
+     */
+    napi_property_descriptor eglSurfaceDesc[] = {
+        DefineFunction("getCurrentSurface", StandardEGLSurface::JSGetCurrentSurface),
+        DefineFunction("setAttribute", StandardEGLSurface::JSSetAttribute),
+        DefineFunction("query", StandardEGLSurface::JSQuery),
+        DefineFunction("bindTexImage", StandardEGLSurface::JSBindTexImage),
+        DefineFunction("releaseTexImage", StandardEGLSurface::JSReleaseTexImage),
+    };
+    DefineSendableClass(env, exports, "EGLSurface", StandardEGLSurface::JSConstructor, eglSurfaceDesc,
+                        &StandardEGLSurface::cons);
 
 
     napi_property_descriptor desc[] = {
@@ -74,7 +154,10 @@ static napi_value Init(napi_env env, napi_value exports) {
         {"createNativeBuffer", nullptr, NativeBuffer::NapiCreateNativeBuffer, nullptr, nullptr, nullptr, napi_default,
          nullptr},
         {"releaseNativeBuffer", nullptr, NativeBuffer::NapiReleaseNativeBuffer, nullptr, nullptr, nullptr, napi_default,
-         nullptr}};
+         nullptr},
+
+
+    };
 
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
 

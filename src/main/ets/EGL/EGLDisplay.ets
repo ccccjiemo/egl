@@ -1,19 +1,47 @@
-import * as EGL from 'libegl.so';
-
 import { EGLConfig } from './EGLConfig'
 import { EGLContext } from './EGLContext';
 import { EGLSurface } from './EGLSurface';
 import { EGLSync } from './EGLSync'
 import { HashMap } from '@kit.ArkTS';
-import { egl } from '../Index'
 import { NativePointer } from './Pointer';
 import { EGLImageKHR } from './EGLImage';
 import { image } from '@kit.ImageKit';
+import { EGLPlatform } from '../constants/EGLPlatform';
+import { EGL_NONE, QueryStringNames } from '../constants/constants';
+import {
+  eglChooseConfig,
+  eglClientWaitSync,
+  eglCopyBuffers,
+  eglCreateContext,
+  eglCreateImageKHR,
+  eglCreatePbufferSurface,
+  eglCreatePixmapSurface,
+  eglCreatePlatformPixmapSurface,
+  eglCreatePlatformWindowSurface,
+  eglCreateSync,
+  eglCreateWindowSurface,
+  eglDestroyContext,
+  eglDestroyImageKHR,
+  eglDestroySurface,
+  eglDestroySync,
+  eglGetConfigs,
+  eglGetCurrentDisplay,
+  eglGetDisplay,
+  eglGetPlatformDisplay,
+  eglGetSyncAttrib,
+  eglInitialize,
+  eglMakeCurrent,
+  eglQueryString,
+  eglSwapBuffers,
+  eglSwapInterval,
+  eglTerminate,
+  eglWaitSync
+} from 'libegl.so';
 
-export interface EGLVersion {
-  major: number,
-  minor: number
-}
+import { EGLVersion } from 'libegl.so'
+import { EGLSyncType } from '../constants/EGLSyncType';
+
+export { EGLVersion };
 
 /**
  * EGLDisplay封装
@@ -40,7 +68,7 @@ export class EGLDisplay implements NativePointer {
    * @returns
    */
   static getDisplay(eglNativeDisplayType?: string): EGLDisplay | undefined {
-    let display_id = EGL.eglGetDisplay(eglNativeDisplayType);
+    let display_id = eglGetDisplay(eglNativeDisplayType);
     if (!display_id) {
       return;
     }
@@ -55,7 +83,7 @@ export class EGLDisplay implements NativePointer {
   }
 
   static getCurrentDisplay(): EGLDisplay | undefined {
-    let display_id = EGL.eglGetCurrentDisplay();
+    let display_id = eglGetCurrentDisplay();
     if (!display_id) {
       return;
     }
@@ -67,9 +95,9 @@ export class EGLDisplay implements NativePointer {
     return display;
   }
 
-  static getPlatformDisplay(platform: egl.EGLPlatform, native_display?: string,
+  static getPlatformDisplay(platform: EGLPlatform, native_display?: string,
     attrib_list?: number[]): EGLDisplay | undefined {
-    let display_id = EGL.eglGetPlatformDisplay(platform, native_display, attrib_list ?? [egl.EGL_NONE]);
+    let display_id = eglGetPlatformDisplay(platform, native_display, attrib_list ?? [EGL_NONE]);
     if (!display_id) {
       return;
     }
@@ -157,7 +185,7 @@ export class EGLDisplay implements NativePointer {
     }
 
     let versions: EGLVersion = { major: 0, minor: 0 };
-    let result = EGL.eglInitialize(this._id, versions);
+    let result = eglInitialize(this._id, versions);
     if (result) {
       //初始化成功，major/minor必定有值
       this._major = versions.major ?? 0;
@@ -178,7 +206,7 @@ export class EGLDisplay implements NativePointer {
     if (!this._isInit) {
       return true;
     }
-    let result = EGL.eglTerminate(this._id);
+    let result = eglTerminate(this._id);
     if (result) {
       EGLDisplay._display_cache.remove(this._id);
     }
@@ -193,7 +221,7 @@ export class EGLDisplay implements NativePointer {
   chooseConfig(attrib_list: number[], count?: number): EGLConfig[] {
     this.ensureInit();
     let result: EGLConfig[] = [];
-    let config_id_list = EGL.eglChooseConfig(this._id, attrib_list, count ?? 1);
+    let config_id_list = eglChooseConfig(this._id, attrib_list, count ?? 1);
     config_id_list.forEach(id => {
       result.push(new EGLConfig(id));
     })
@@ -209,7 +237,7 @@ export class EGLDisplay implements NativePointer {
    */
   createContext(config: EGLConfig, share_context?: EGLContext, attrib_list?: number[]): EGLContext | undefined {
     this.ensureInit();
-    let context_id = EGL.eglCreateContext(this._id, config.id, share_context?.id, attrib_list ?? [egl.EGL_NONE]);
+    let context_id = eglCreateContext(this._id, config.id, share_context?.id, attrib_list ?? [EGL_NONE]);
     if (!context_id) {
       return;
     }
@@ -227,7 +255,7 @@ export class EGLDisplay implements NativePointer {
    */
   createSurfaceWindow(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
-    let surface_id = EGL.eglCreateWindowSurface(this._id, config.id, surfaceId, attrib_list ?? []);
+    let surface_id = eglCreateWindowSurface(this._id, config.id, surfaceId, attrib_list ?? []);
     if (!surface_id) {
       return;
     }
@@ -245,7 +273,7 @@ export class EGLDisplay implements NativePointer {
    */
   makeCurrent(draw: EGLSurface | undefined, read: EGLSurface | undefined, context: EGLContext | undefined): boolean {
     this.ensureInit();
-    return EGL.eglMakeCurrent(this._id, draw?.id, read?.id, context?.id);
+    return eglMakeCurrent(this._id, draw?.id, read?.id, context?.id);
   }
 
   /**
@@ -256,7 +284,7 @@ export class EGLDisplay implements NativePointer {
    */
   createPbufferSurface(config: EGLConfig, attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
-    let surface_id = EGL.eglCreatePbufferSurface(this._id, config.id, attrib_list ?? [egl.EGL_NONE]);
+    let surface_id = eglCreatePbufferSurface(this._id, config.id, attrib_list ?? [EGL_NONE]);
     if (!surface_id) {
       return;
     }
@@ -272,7 +300,7 @@ export class EGLDisplay implements NativePointer {
    */
   destroyContext(context: EGLContext): boolean {
     this.ensureInit();
-    return EGL.eglDestroyContext(this._id, context.id);
+    return eglDestroyContext(this._id, context.id);
   }
 
   /**
@@ -282,7 +310,7 @@ export class EGLDisplay implements NativePointer {
    */
   destroySurface(surface: EGLSurface): boolean {
     this.ensureInit();
-    return EGL.eglDestroySurface(this._id, surface.id);
+    return eglDestroySurface(this._id, surface.id);
   }
 
 
@@ -294,7 +322,7 @@ export class EGLDisplay implements NativePointer {
     if (count < 1) {
       count = 1;
     }
-    let config_result: string[] = EGL.eglGetConfigs(this._id, count);
+    let config_result: string[] = eglGetConfigs(this._id, count);
     let configs: EGLConfig[] = [];
 
     config_result.forEach(id => {
@@ -308,9 +336,9 @@ export class EGLDisplay implements NativePointer {
   /**
    *eglQueryString
    */
-  queryString(name: egl.QueryStringNames): string {
+  queryString(name: QueryStringNames): string {
     this.ensureInit();
-    return EGL.eglQueryString(this._id, name);
+    return eglQueryString(this._id, name);
   }
 
   /**
@@ -318,15 +346,15 @@ export class EGLDisplay implements NativePointer {
    */
   swapBuffers(surface: EGLSurface): boolean {
     this.ensureInit();
-    return EGL.eglSwapBuffers(this._id, surface.id);
+    return eglSwapBuffers(this._id, surface.id);
   }
 
   /**
    *eglCreateSync
    */
-  createSync(type: egl.EGLSyncType, attrib_list?: number[]): EGLSync | undefined {
+  createSync(type: EGLSyncType, attrib_list?: number[]): EGLSync | undefined {
     this.ensureInit();
-    let sync_id = EGL.eglCreateSync(this._id, type, attrib_list ?? [egl.EGL_NONE]);
+    let sync_id = eglCreateSync(this._id, type, attrib_list ?? [EGL_NONE]);
     if (!sync_id) {
       return;
     }
@@ -339,7 +367,7 @@ export class EGLDisplay implements NativePointer {
    */
   destroySync(sync: EGLSync): boolean {
     this.ensureInit();
-    return EGL.eglDestroySync(this._id, sync.id);
+    return eglDestroySync(this._id, sync.id);
   }
 
   /**
@@ -347,7 +375,7 @@ export class EGLDisplay implements NativePointer {
    */
   clientWaitSync(sync: EGLSync, flags: number, timeout: number): number {
     this.ensureInit();
-    return EGL.eglClientWaitSync(this._id, sync.id, flags, timeout);
+    return eglClientWaitSync(this._id, sync.id, flags, timeout);
   }
 
   /**
@@ -357,7 +385,7 @@ export class EGLDisplay implements NativePointer {
    */
   waitSync(sync: EGLSync, flags: number): boolean {
     this.ensureInit();
-    return EGL.eglWaitSync(this._id, sync.id, flags);
+    return eglWaitSync(this._id, sync.id, flags);
   }
 
   /**
@@ -366,7 +394,7 @@ export class EGLDisplay implements NativePointer {
    */
   getSyncAttrib(sync: EGLSync, attribute: number): number | undefined {
     this.ensureInit();
-    return EGL.eglGetSyncAttrib(this._id, sync.id, attribute);
+    return eglGetSyncAttrib(this._id, sync.id, attribute);
   }
 
   /**
@@ -374,7 +402,7 @@ export class EGLDisplay implements NativePointer {
    */
   swapInterval(interval: number): boolean {
     this.ensureInit();
-    return EGL.eglSwapInterval(this._id, interval);
+    return eglSwapInterval(this._id, interval);
   }
 
   /**
@@ -385,7 +413,7 @@ export class EGLDisplay implements NativePointer {
     attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
     let surface_id =
-      EGL.eglCreatePlatformPixmapSurface(this._id, config.id, native_pixmap_ptr, attrib_list ?? [egl.EGL_NONE]);
+      eglCreatePlatformPixmapSurface(this._id, config.id, native_pixmap_ptr, attrib_list ?? [EGL_NONE]);
     if (!surface_id) {
       return;
     }
@@ -401,7 +429,7 @@ export class EGLDisplay implements NativePointer {
     attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
     let surface_id =
-      EGL.eglCreatePlatformWindowSurface(this._id, config.id, native_window_ptr, attrib_list ?? [egl.EGL_NONE]);
+      eglCreatePlatformWindowSurface(this._id, config.id, native_window_ptr, attrib_list ?? [EGL_NONE]);
     if (!surface_id) {
       return;
     }
@@ -415,7 +443,7 @@ export class EGLDisplay implements NativePointer {
   createImageKHR(target: number, context: EGLContext, buffer?: NativePointer,
     attrib_list?: number[]): EGLImageKHR | undefined {
     this.ensureInit();
-    let result = EGL.eglCreateImageKHR(this._id, context.id, target, buffer?.id, attrib_list ?? [egl.EGL_NONE]);
+    let result = eglCreateImageKHR(this._id, context.id, target, buffer?.id, attrib_list ?? [EGL_NONE]);
     if (result) {
       return new EGLImageKHR(result);
     }
@@ -423,7 +451,7 @@ export class EGLDisplay implements NativePointer {
   }
 
   destroyImageKHR(image: EGLImageKHR): boolean {
-    return EGL.eglDestroyImageKHR(this._id, image.id);
+    return eglDestroyImageKHR(this._id, image.id);
   }
 
 
@@ -431,7 +459,7 @@ export class EGLDisplay implements NativePointer {
    *个人测试不报错，但是拷贝不成功
    */
   copyBuffers(surface: EGLSurface, target: image.PixelMap): boolean {
-    return EGL.eglCopyBuffers(this._id, surface.id, target);
+    return eglCopyBuffers(this._id, surface.id, target);
   }
 
   /**
@@ -439,7 +467,7 @@ export class EGLDisplay implements NativePointer {
    */
   createPixmapSurface(config: EGLConfig, pixmap: image.PixelMap, attrib_list?: number[]): EGLSurface | undefined {
     this.ensureInit();
-    let surface_id = EGL.eglCreatePixmapSurface(this._id, config.id, pixmap, attrib_list ?? [egl.EGL_NONE]);
+    let surface_id = eglCreatePixmapSurface(this._id, config.id, pixmap, attrib_list ?? [EGL_NONE]);
     if (!surface_id) {
       return;
     }

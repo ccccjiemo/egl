@@ -1,7 +1,7 @@
 import { eglGetCurrentSurface, eglSurfaceAttrib, eglBindTexImage, eglReleaseTexImage, eglQuerySurface } from 'libegl.so'
 import { EGLDisplay } from './EGLDisplay';
-import { egl } from '../Index'
 import { NativePointer } from './Pointer';
+import { READDRAW } from '../constants/READDRAW';
 
 
 export class EGLSurface implements NativePointer {
@@ -15,7 +15,7 @@ export class EGLSurface implements NativePointer {
     return this._id;
   }
 
-  static getCurrentSurface(readdraw: egl.READDRAW): EGLSurface | undefined {
+  static getCurrentSurface(readdraw: READDRAW): EGLSurface | undefined {
     let surface_id = eglGetCurrentSurface(readdraw);
     if (!surface_id) {
       return;

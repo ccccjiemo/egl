@@ -1,5 +1,8 @@
+import { NativeBufferConfig } from "libegl.so";
 import { NativePointer } from "../EGL/Pointer";
-import { createOHNativeBuffer, NativeBufferConfig, releaseOHNativeBuffer } from "./NativeHelperr";
+import { createOHNativeBuffer,  releaseOHNativeBuffer } from "./NativeHelperr";
+
+export {NativeBufferConfig}
 
 export class NativeBuffer implements NativePointer {
   private readonly _id: string;

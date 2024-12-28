@@ -52,19 +52,13 @@ export enum NativeBufferFormat {
   BUTT = 0x7fffffff
 }
 
-export interface NativeBufferConfig {
-  width: number;
-  height: number;
-  format: NativeBufferFormat;
-  usage: NativeBufferUsage;
-  stride: number;
-}
+
 
 // export function getWindowFromSurfaceId(surfaceId: string) {
 //   return lib.getWindowFromSurfaceId(surfaceId);
 // }
 
-export function createOHNativeBuffer(config: NativeBufferConfig): string | undefined {
+export function createOHNativeBuffer(config: lib.NativeBufferConfig): string | undefined {
   return lib.createNativeBuffer(config);
 }
 

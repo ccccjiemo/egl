@@ -1,4 +1,5 @@
 import { image } from "@kit.ImageKit";
+import { lang } from "@kit.ArkTS";
 
 export interface NativeBufferConfig {
   width: number;
@@ -118,7 +119,7 @@ export const eglWaitSync: (dpy: string, sync: string, flags: number) => boolean;
 export const eglCreatePixmapSurface: (dpy: string, config: string, pixmap: image.PixelMap,
   attrib_list?: number[]) => string | undefined;
 
-export const eglCreateImageKHR: (dpy: string, context: string, target: number, buffer: string,
+export const eglCreateImageKHR: (dpy: string, context: string, target: number, buffer?: string,
   attrib_list?: number[]) => string | undefined;
 
 export const createNativeBuffer: (options: NativeBufferConfig) => string | undefined;
@@ -131,3 +132,125 @@ export const eglCreatePbufferFromClientBuffer: (dpy: string, buftype: number, bu
 export const eglCopyBuffers: (dpy: string, surface: string, target: image.PixelMap) => boolean;
 
 export const eglDestroyImageKHR: (dpy: string, image: string) => boolean;
+
+@Sendable
+export class EGLDisplay {
+  private constructor()
+
+  static getDisplay(eglNativeDisplayType?: string): EGLDisplay | undefined
+
+  static getCurrentDisplay(): EGLDisplay | undefined
+
+  static getPlatformDisplay(platform: number, native_display?: string,
+    attrib_list?: number[]): EGLDisplay | undefined
+
+  initialize(): boolean
+
+
+  terminate(): boolean
+
+
+  chooseConfig(attrib_list: number[], count?: number): EGLConfig[]
+
+
+  createContext(config: EGLConfig, share_context?: EGLContext, attrib_list?: number[]): EGLContext | undefined
+
+
+  createSurfaceWindow(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined
+
+
+  makeCurrent(draw: EGLSurface | undefined, read: EGLSurface | undefined, context: EGLContext | undefined): boolean
+
+
+  createPbufferSurface(config: EGLConfig, attrib_list?: number[]): EGLSurface | undefined
+
+
+  destroyContext(context: EGLContext): boolean
+
+
+  destroySurface(surface: EGLSurface): boolean
+
+
+  getConfigs(count: number): EGLConfig[]
+
+
+  queryString(name: number): string
+
+  swapBuffers(surface: EGLSurface): boolean
+
+
+  // createSync(type: number, attrib_list?: number[]): EGLSync | undefined
+  //
+  //
+  // destroySync(sync: EGLSync): boolean
+  //
+  //
+  // clientWaitSync(sync: EGLSync, flags: number, timeout: number): number
+  //
+  //
+  // waitSync(sync: EGLSync, flags: number): boolean
+  //
+  //
+  // getSyncAttrib(sync: EGLSync, attribute: number): number | undefined
+  //
+  //
+  // swapInterval(interval: number): boolean
+  //
+  //
+  // createPlatformPixmapSurface(config: EGLConfig, native_pixmap_ptr?: string,
+  //   attrib_list?: number[]): EGLSurface | undefined
+  //
+  //
+  // createPlatformWindowSurface(config: EGLConfig, native_window_ptr?: string,
+  //   attrib_list?: number[]): EGLSurface | undefined
+  //
+  //
+  // createImageKHR(target: number, context: EGLContext, buffer?: NativePointer,
+  //   attrib_list?: number[]): EGLImageKHR | undefined
+  //
+  // destroyImageKHR(image: EGLImageKHR): boolean
+  //
+  //
+  // copyBuffers(surface: EGLSurface, target: image.PixelMap): boolean
+  //
+  //
+  // createPixmapSurface(config: EGLConfig, pixmap: image.PixelMap, attrib_list?: number[]): EGLSurface | undefined
+}
+
+@Sendable
+export class EGLConfig {
+  private constructor()
+
+  getConfigAttrib(dpy: EGLDisplay, attribute: number): number | undefined
+}
+
+@Sendable
+export class EGLContext {
+  private constructor(id: string)
+
+  static getCurrentContext(): EGLContext | undefined
+
+  query(dpy: EGLDisplay, attribute: number): number | undefined
+}
+
+@Sendable
+export class EGLSurface {
+  private constructor(id: string)
+
+  static getCurrentSurface(readdraw: number): EGLSurface | undefined
+
+
+  setAttribute(dpy: EGLDisplay, attribute: number, value: number): boolean
+
+  query(dpy: EGLDisplay, attribute: number): number | undefined
+
+
+  bindTexImage(dpy: EGLDisplay, buffer: number): boolean
+
+
+  releaseTexImage(dpy: EGLDisplay, buffer: number): boolean
+}
+
+
+
+

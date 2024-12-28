@@ -59,7 +59,6 @@ napi_value NapiEGLCreatePlatformWindowSurfaceEXT(napi_env env, napi_callback_inf
 napi_value NapiEGLCreatePlatformPixmapSurfaceEXT(napi_env env, napi_callback_info info);
 napi_value NapiEGLSwapBuffersWithDamageEXT(napi_env env, napi_callback_info info);
 napi_value NapiEGLDestroyImageKHR(napi_env env, napi_callback_info info);
-void Export(napi_env env, napi_value exports);
 } // namespace EGL
 
 

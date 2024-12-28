@@ -1,0 +1,5 @@
+export enum EGLApi {
+  EGL_OPENGL_API = 0x30A2,
+  EGL_OPENGL_ES_API = 0x30A0,
+  EGL_OPENVG_API = 0x30A1
+}

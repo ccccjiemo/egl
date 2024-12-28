@@ -1,0 +1,6 @@
+export enum QueryStringNames {
+  EGL_CLIENT_APIS = 0x308D,
+  EGL_VENDOR = 0x3053,
+  EGL_VERSION = 0x3054,
+  EGL_EXTENSIONS = 0x3055
+}

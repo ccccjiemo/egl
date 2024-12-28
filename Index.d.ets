@@ -1,11 +1,14 @@
 import { image } from "@kit.ImageKit";
+import { lang } from "@kit.ArkTS";
 
-interface EGLVersion {
-  major: number;
-  minjor: number;
-}
 
 declare namespace egl {
+
+  interface EGLVersion {
+    major: number;
+    minjor: number;
+  }
+
   interface NativePointer {
     get id(): string;
   }
@@ -57,8 +60,7 @@ declare namespace egl {
 
     get id(): string;
 
-
-    static getCurrentSurface(readdraw: egl.READDRAW): EGLSurface | undefined;
+    static getCurrentSurface(readdraw: READDRAW): EGLSurface | undefined;
 
     /**
      * eglSurfaceAttrib
@@ -201,7 +203,6 @@ declare namespace egl {
      */
     destroySurface(surface: EGLSurface): boolean;
 
-
     /**
      *对应eglGetConfigs
      */
@@ -272,7 +273,6 @@ declare namespace egl {
       attrib_list?: number[]): EGLImageKHR | undefined;
 
     destroyImageKHR(image: EGLImageKHR): boolean;
-
 
     /**
      *个人测试不报错，但是拷贝不成功
@@ -453,15 +453,15 @@ declare namespace egl {
     EGL_EXTENSIONS = 0x3055
   }
 
-  export const EGL_NO_SURFACE;
+  export const EGL_NO_SURFACE: undefined;
 
-  export const EGL_NO_CONTEXT;
+  export const EGL_NO_CONTEXT: undefined;
 
-  export const EGL_NO_CONFIG;
+  export const EGL_NO_CONFIG: undefined;
 
-  export const EGL_NO_DISPLAY;
+  export const EGL_NO_DISPLAY: undefined;
 
-  export const EGL_DEFAULT_DISPLAY;
+  export const EGL_DEFAULT_DISPLAY: undefined;
 
   export const EGL_DONT_CARE = -1;
 
@@ -781,7 +781,7 @@ declare namespace egl {
 
   export const EGL_NATIVE_PIXMAP_KHR = 0x30B0;
 
-  export const EGL_NO_IMAGE_KHR;
+  export const EGL_NO_IMAGE_KHR: null;
 
   export const EGL_IMAGE_PRESERVED_KHR = 0x30D2;
 
@@ -831,7 +831,7 @@ declare namespace egl {
 
   export const EGL_MUTABLE_RENDER_BUFFER_BIT_KHR = 0x1000;
 
-  export const EGL_NO_CONFIG_KHR;
+  export const EGL_NO_CONFIG_KHR: number;
 
   export const EGL_BUFFER_AGE_KHR = 0x313D;
 
@@ -863,11 +863,11 @@ declare namespace egl {
 
   export const EGL_SYNC_FLUSH_COMMANDS_BIT_KHR = 0x0001;
 
-  export const EGL_FOREVER_KHR = -1;
+  export const EGL_FOREVER_KHR: number;
 
-  export const EGL_NO_SYNC_KHR;
+  export const EGL_NO_SYNC_KHR: number;
 
-  export const EGL_NO_STREAM_KHR;
+  export const EGL_NO_STREAM_KHR: number;
 
   export const EGL_CONSUMER_LATENCY_USEC_KHR = 0x3210;
 
@@ -991,7 +991,7 @@ declare namespace egl {
 
   export const EGL_LOSE_CONTEXT_ON_RESET_EXT = 0x31BF;
 
-  export const EGL_NO_DEVICE_EXT;
+  export const EGL_NO_DEVICE_EXT: number;
 
   export const EGL_BAD_DEVICE_EXT = 0x322B;
 
@@ -1105,9 +1105,9 @@ declare namespace egl {
 
   export const EGL_MULTIVIEW_VIEW_COUNT_EXT = 0x3134;
 
-  export const EGL_NO_OUTPUT_LAYER_EXT;
+  export const EGL_NO_OUTPUT_LAYER_EXT: number;
 
-  export const EGL_NO_OUTPUT_PORT_EXT;
+  export const EGL_NO_OUTPUT_PORT_EXT: number;
 
   export const EGL_BAD_OUTPUT_LAYER_EXT = 0x322D;
 
@@ -1645,8 +1645,8 @@ declare namespace egl {
 
   export function eglReleaseTexImage(dpy: EGLDisplay, surface: EGLSurface, buffer: number): boolean;
 
-  export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: EGLBufferType, buffer: NativeBuffer,
-    config: EGLConfig, attrib_list?: number[]);
+  // export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: EGLBufferType, buffer: NativeBuffer,
+  //   config: EGLConfig, attrib_list?: number[]);
 
   /**
    *https://registry.khronos.org/EGL/sdk/docs/man/html/eglSurfaceAttrib.xhtml
@@ -1707,4 +1707,7 @@ declare namespace egl {
 
   export function eglDestroyImageKHR(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativePointer,
     attrib_list?: number[]): EGLImageKHR | undefined;
+
+
+
 }

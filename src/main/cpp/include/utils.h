@@ -11,7 +11,14 @@
 #include <cstdlib>
 #include <js_native_api.h>
 #include <js_native_api_types.h>
+#include <napi/native_api.h>
 #include <native_window/external_window.h>
+
+#define DefineFunction(name, func)                                                                                     \
+    { name, nullptr, func, nullptr, nullptr, nullptr, napi_default, nullptr }
+
+#define DefineSendableClass(env, exports, className, constructor, desc,  ref)                                     \
+    defineSendableClass(env, exports, className, constructor, desc, sizeof(desc)/sizeof(desc[0]), ref)
 
 static OHNativeWindow *getNativeWindow(napi_env env, napi_value value) {
     size_t size = 32;
@@ -139,6 +146,14 @@ static void createFunction(napi_env env, napi_value exports, const char *funName
     napi_create_function(env, funName, NAPI_AUTO_LENGTH, function, nullptr, &func);
 
     napi_set_named_property(env, exports, funName, func);
+}
+
+static void defineSendableClass(napi_env env, napi_value exports, const char *className, napi_callback constructor,
+                                const napi_property_descriptor *desc, size_t size, napi_ref *ref) {
+    napi_value cons = nullptr;
+    napi_define_sendable_class(env, className, NAPI_AUTO_LENGTH, constructor, nullptr, size, desc, nullptr, &cons);
+    napi_create_reference(env, cons, 1, ref);
+    napi_set_named_property(env, exports, className, cons);
 }
 
 #endif // GLSURFACEVIEW_UTILS_H
