@@ -17,8 +17,45 @@
 #define DefineFunction(name, func)                                                                                     \
     { name, nullptr, func, nullptr, nullptr, nullptr, napi_default, nullptr }
 
-#define DefineSendableClass(env, exports, className, constructor, desc,  ref)                                     \
-    defineSendableClass(env, exports, className, constructor, desc, sizeof(desc)/sizeof(desc[0]), ref)
+#define DefineSendableClass(env, exports, className, constructor, desc, ref)                                           \
+    defineSendableClass(env, exports, className, constructor, desc, sizeof(desc) / sizeof(desc[0]), ref)
+
+#define DefineSendableClassWithSize(env, exports, className, constructor, desc, size, ref)                             \
+    defineSendableClass(env, exports, className, constructor, desc, size, ref)
+
+#define Generate(name)                                                                                                 \
+    napi_value _this = nullptr;                                                                                        \
+    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);                                                    \
+    return EGLBase::name(env, _this);
+
+#define Generate1(name)                                                                                                \
+    size_t argc = 1;                                                                                                   \
+    napi_value argv[1]{nullptr};                                                                                       \
+    napi_value _this = nullptr;                                                                                        \
+    napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);                                                         \
+    return EGLBase::name(env, _this, argv[0]);
+
+#define Generate2(name)                                                                                                \
+    size_t argc = 2;                                                                                                   \
+    napi_value argv[2]{nullptr};                                                                                       \
+    napi_value _this = nullptr;                                                                                        \
+    napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);                                                         \
+    return EGLBase::name(env, _this, argv[0], argv[1]);
+
+#define Generate3(name)                                                                                                \
+    size_t argc = 3;                                                                                                   \
+    napi_value argv[3]{nullptr};                                                                                       \
+    napi_value _this = nullptr;                                                                                        \
+    napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);                                                         \
+    return EGLBase::name(env, _this, argv[0], argv[1], argv[2]);
+
+#define Generate4(name)                                                                                                \
+    size_t argc = 4;                                                                                                   \
+    napi_value argv[4]{nullptr};                                                                                       \
+    napi_value _this = nullptr;                                                                                        \
+    napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);                                                         \
+    return EGLBase::name(env, _this, argv[0], argv[1], argv[2], argv[3]);
+
 
 static OHNativeWindow *getNativeWindow(napi_env env, napi_value value) {
     size_t size = 32;
@@ -30,6 +67,36 @@ static OHNativeWindow *getNativeWindow(napi_env env, napi_value value) {
 
     OH_NativeWindow_CreateNativeWindowFromSurfaceId(surfaceId, &window);
     return window;
+}
+
+static EGLint getEGLInt(napi_env env, napi_value value) {
+    napi_valuetype type;
+    napi_typeof(env, value, &type);
+    EGLint result = 0;
+    if (type == napi_number) {
+        napi_get_value_int32(env, value, &result);
+    }
+    return result;
+}
+
+static EGLTime getEGLTime(napi_env env, napi_value value) {
+    napi_valuetype type;
+    napi_typeof(env, value, &type);
+    long result = 0;
+    if (type == napi_number) {
+        napi_get_value_int64(env, value, &result);
+    }
+    return result;
+}
+
+static EGLenum getEGLenum(napi_env env, napi_value value) {
+    napi_valuetype type;
+    napi_typeof(env, value, &type);
+    EGLenum result = 0;
+    if (type == napi_number) {
+        napi_get_value_uint32(env, value, &result);
+    }
+    return result;
 }
 
 static EGLint *getEGLintList(napi_env env, napi_value val) {
@@ -141,6 +208,24 @@ static napi_value NapiCreateInt32(napi_env env, EGLint value) {
     return result;
 }
 
+static napi_value NapiCreateEGLAttrib(napi_env env, EGLAttrib value) {
+    napi_value result = nullptr;
+    napi_create_int64(env, value, &result);
+    return result;
+}
+
+static napi_value NapiCreateEGLenum(napi_env env, EGLenum value) {
+    napi_value result = nullptr;
+    napi_create_uint32(env, value, &result);
+    return result;
+}
+
+static napi_value NapiCreateBoolean(napi_env env, EGLBoolean value) {
+    napi_value result = nullptr;
+    napi_get_boolean(env, value, &result);
+    return result;
+}
+
 static void createFunction(napi_env env, napi_value exports, const char *funName, napi_callback function) {
     napi_value func = nullptr;
     napi_create_function(env, funName, NAPI_AUTO_LENGTH, function, nullptr, &func);
@@ -154,6 +239,50 @@ static void defineSendableClass(napi_env env, napi_value exports, const char *cl
     napi_define_sendable_class(env, className, NAPI_AUTO_LENGTH, constructor, nullptr, size, desc, nullptr, &cons);
     napi_create_reference(env, cons, 1, ref);
     napi_set_named_property(env, exports, className, cons);
+}
+
+static napi_value JSConstructor(napi_env env, napi_callback_info info) {
+    napi_value _this = nullptr;
+    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);
+    return _this;
+}
+template <typename T> static T GetSendable(napi_env env, napi_value value) {
+    napi_valuetype type;
+    napi_typeof(env, value, &type);
+    if (napi_undefined == type)
+        return nullptr;
+    void *result = nullptr;
+    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
+        napi_throw_error(env, "Sendable", "napi_unwrap_sendable failed");
+        return nullptr;
+    }
+    return static_cast<T>(result);
+}
+template <typename T> static T GetSendable(napi_env env, napi_callback_info info) {
+    napi_value _this = nullptr;
+    if (napi_ok != napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr)) {
+        napi_throw_error(env, "EGLSync", "napi_get_cb_info failed");
+        return nullptr;
+    }
+    return GetSendable<T>(env, _this);
+}
+
+template <typename T> static T RemoveSendable(napi_env env, napi_value value) {
+    void *result = nullptr;
+    napi_remove_wrap_sendable(env, value, &result);
+    return static_cast<T>(result);
+}
+
+template <typename T> static T RemoveSendable(napi_env env, napi_callback_info info) {
+    napi_value _this = nullptr;
+    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);
+    return RemoveSendable<T>(env, _this);
+}
+
+static napi_value GetThis(napi_env env, napi_callback_info info) {
+    napi_value _this = nullptr;
+    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);
+    return _this;
 }
 
 #endif // GLSURFACEVIEW_UTILS_H

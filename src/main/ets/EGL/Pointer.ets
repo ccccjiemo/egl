@@ -1,3 +1,3 @@
-export interface NativePointer {
-  get id(): string;
-}
+// export interface NativePointer {
+//   get id(): string;
+// }

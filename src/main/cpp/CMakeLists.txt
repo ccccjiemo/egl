@@ -15,12 +15,17 @@ include_directories(${NATIVERENDER_ROOT_PATH}
                     ${NATIVERENDER_ROOT_PATH}/include)
 
 add_library(egl SHARED napi_init.cpp
-egl/EGLHelper.cpp
+standard/EGLBase.cpp
 ptr/Ptr.cpp
-nativebuffer/NativeBuffer.cpp
 standard/EGLConfig.cpp
 standard/EGLDisplay.cpp
 standard/EGLContext.cpp
-standard/EGLSurface.cpp)
+standard/EGLSurface.cpp
+standard/EGLImage.cpp
+standard/EGLImageKHR.cpp
+standard/EGLSync.cpp
+standard/EGLSyncKHR.cpp
+standard/NativeBuffer.cpp
+egl/NapiEGL.cpp)
 
 target_link_libraries(egl PUBLIC libace_napi.z.so libEGL.so libnative_window.so libnative_buffer.so libGLESv3.so libpixelmap_ndk.z.so libpixelmap.so)

@@ -71,41 +71,34 @@ let buffer = egl.NativeBuffer.createNativeBuffer({
   stride: 4,
   format: egl.NativeBufferFormat.RGBA_8888
 })
-let image: egl.EGLImageKHR | undefined = display?.createImageKHR(egl.EGL_GL_TEXTURE_2D_KHR, context, buffer, [egl.EGL_NONE]);
+let image: egl.EGLImageKHR | undefined =
+  display?.createImageKHR(egl.EGL_GL_TEXTURE_2D_KHR, context, buffer, [egl.EGL_NONE]);
 buffer?.release();
 display?.destroyImageKHR(image)
 //OHNativeBuffer的操作需要开发者自己需求开发napi方法 buffer.id可以获取对象指针字符串，native侧将字符串转成指针
 ```
----
-### 已知问题
-- 模拟器获取surface仅支持window和pbuffer，不知道是不是api不支持，但api中对pixelmap操作都不报错 
-- api12的egl扩展库签名识别不正确，napi中无法调用扩展方法和编译，只能通过eglGetProcAddress方式调用。
 
 ---
 
 ### 可用API
 
-#### egl
 
 | api                              | 
 |----------------------------------| 
+| eglGetDisplay                    |
+| eglInitialize                    |
 | eglChooseConfig                  |
-| eglCopyBuffers                   |
-| eglCreateContext                 |
-| eglCreatePbufferSurface          |
-| eglCreatePixmapSurface           |
+| eglGetError                      |
 | eglCreateWindowSurface           |
+| eglMakeCurrent                   |
+| eglCreatePbufferSurface          |
 | eglDestroyContext                |
 | eglDestroySurface                |
 | eglGetConfigAttrib               |
 | eglGetConfigs                    |
 | eglGetCurrentDisplay             |
 | eglGetCurrentSurface             |
-| eglGetDisplay                    |
-| eglGetError                      |
 | eglGetProcAddress                |
-| eglInitialize                    |
-| eglMakeCurrent                   |
 | eglQueryContext                  |
 | eglQueryString                   |
 | eglQuerySurface                  |
@@ -119,7 +112,6 @@ display?.destroyImageKHR(image)
 | eglSwapInterval                  |
 | eglBindAPI                       |
 | eglQueryAPI                      |
-| eglCreatePbufferFromClientBuffer |
 | eglReleaseThread                 |
 | eglWaitClient                    |
 | eglGetCurrentContext             |
@@ -127,10 +119,17 @@ display?.destroyImageKHR(image)
 | eglDestroySync                   |
 | eglClientWaitSync                |
 | eglGetSyncAttrib                 |
+| eglDestroyImage                  |
 | eglGetPlatformDisplay            |
 | eglCreatePlatformWindowSurface   |
 | eglCreatePlatformPixmapSurface   |
 | eglWaitSync                      |
+| eglCreatePixmapSurface           |
 | eglCreateImageKHR                |
+| eglCreatePbufferFromClientBuffer |
+| eglCopyBuffers                   |
 | eglDestroyImageKHR               |
+| eglCreateSyncKHR                 |
+| eglDestroySyncKHR                |
+| eglCreateImage                   |
 

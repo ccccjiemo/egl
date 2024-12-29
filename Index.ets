@@ -1,1 +1,1 @@
-export * as egl from './src/main/ets/Index'
+export { egl } from './src/main/ets/Index'

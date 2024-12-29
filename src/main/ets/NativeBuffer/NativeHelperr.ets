@@ -1,4 +1,4 @@
-import * as lib from 'libegl.so'
+// import * as lib from 'libegl.so'
 
 export enum NativeBufferUsage {
   CPU_READ = 1,
@@ -58,13 +58,13 @@ export enum NativeBufferFormat {
 //   return lib.getWindowFromSurfaceId(surfaceId);
 // }
 
-export function createOHNativeBuffer(config: lib.NativeBufferConfig): string | undefined {
-  return lib.createNativeBuffer(config);
-}
-
-export function releaseOHNativeBuffer(buffer: string): number {
-  return lib.releaseNativeBuffer(buffer);
-}
+// export function createOHNativeBuffer(config: lib.NativeBufferConfig): string | undefined {
+//   return lib.createNativeBuffer(config);
+// }
+//
+// export function releaseOHNativeBuffer(buffer: string): number {
+//   return lib.releaseNativeBuffer(buffer);
+// }
 
 //
 // /**

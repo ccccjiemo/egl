@@ -16,6 +16,8 @@ napi_value StandardEGLContext::JSConstructor(napi_env env, napi_callback_info in
 }
 
 napi_value StandardEGLContext::CreateEGLContext(napi_env env, EGLContext context) {
+    if (context == nullptr)
+        return nullptr;
     napi_value _con = nullptr;
     napi_get_reference_value(env, cons, &_con);
     napi_value instance = nullptr;

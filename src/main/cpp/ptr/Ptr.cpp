@@ -140,13 +140,13 @@ napi_value Ptr::NapiCreatePtr(napi_env env, void *ptr) {
     return r;
 }
 
-void *getPtrFromString(napi_env env, napi_value value) {
-    long long int result = 0;
-    char str[36];
-    size_t bufsize = 0;
-    napi_get_value_string_utf8(env, value, str, bufsize, &bufsize);
-    result = atoll(str);
-}
+// void *getPtrFromString(napi_env env, napi_value value) {
+//     long long int result = 0;
+//     char str[36];
+//     size_t bufsize = 0;
+//     napi_get_value_string_utf8(env, value, str, bufsize, &bufsize);
+//     result = atoll(str);
+// }
 
 void *Ptr::NapiGetPtr(napi_env env, napi_value obj) {
     void *result = nullptr;

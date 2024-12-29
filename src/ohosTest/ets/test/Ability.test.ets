@@ -1,6 +1,14 @@
-import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import { egl } from '../../../../Index';
+import { eglGetDisplay } from 'libegl.so';
+import {
+  EGL_ALPHA_SIZE,
+  EGL_BLUE_SIZE,
+  EGL_GREEN_SIZE, EGL_NONE,
+  EGL_OPENGL_ES2_BIT,
+  EGL_OPENGL_ES3_BIT_KHR,
+  EGL_RED_SIZE,
+  EGL_RENDERABLE_TYPE,
+  EGL_SURFACE_TYPE, EGL_WINDOW_BIT } from '../../../main/ets/egl';
 
 
 export default function abilityTest() {
@@ -25,9 +33,20 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     it('assertContain', 0, () => {
+      let display = eglGetDisplay();
+      display?.initialize();
+      display?.chooseConfig([
+        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+        EGL_RED_SIZE, 8,
+        EGL_GREEN_SIZE, 8,
+        EGL_BLUE_SIZE, 8,
+        EGL_ALPHA_SIZE, 8,
+        EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT | EGL_OPENGL_ES3_BIT_KHR,
+        EGL_NONE])
+      let config = display?.getConfigs(1)[0];
+      let context = display?.createContext(config!, undefined);
 
-
-
+      console.log('1');
     })
   })
 }

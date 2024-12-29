@@ -1,5 +1,4 @@
 import { image } from "@kit.ImageKit";
-import { lang } from "@kit.ArkTS";
 
 
 declare namespace egl {
@@ -9,41 +8,30 @@ declare namespace egl {
     minjor: number;
   }
 
-  interface NativePointer {
-    get id(): string;
-  }
-
   /**
+
    * 创建一个OHNativeBuffer,使用完记得释放，对OHNativeBuffer的操作需要开发者实现napi
    */
-  class NativeBuffer implements NativePointer {
-    private constructor();
-
-    get id(): string;
+  @Sendable
+  class NativeBuffer {
+    constructor(config: NativeBufferConfig);
 
     /***
      * 一定要释放
      */
-    release(): boolean;
-
-    static createNativeBuffer(config: NativeBufferConfig): NativeBuffer | undefined;
+    destroy(): boolean;
   }
 
-  class EGLConfig implements NativePointer {
+  @Sendable
+  class EGLConfig {
     private constructor();
 
-    get id(): string;
-
-    /**
-     * eglGetConfigAttrib
-     */
     getConfigAttrib(dpy: EGLDisplay, attribute: EGLConfigAttribute): number | undefined;
   }
 
-  class EGLContext implements NativePointer {
+  @Sendable
+  class EGLContext {
     private constructor();
-
-    get id(): string;
 
     static getCurrentContext(): EGLContext | undefined;
 
@@ -55,44 +43,57 @@ declare namespace egl {
     query(dpy: EGLDisplay, attribute: number): number | undefined;
   }
 
-  class EGLSurface implements NativePointer {
+  @Sendable
+  class EGLSurface {
     private constructor();
-
-    get id(): string;
 
     static getCurrentSurface(readdraw: READDRAW): EGLSurface | undefined;
 
     /**
      * eglSurfaceAttrib
+     * @param attribute EGL_MIPMAP_LEVEL / EGL_MULTISAMPLE_RESOLVE / EGL_SWAP_BEHAVIOR
      */
     setAttribute(dpy: EGLDisplay, attribute: number, value: number): boolean;
 
-    query(dpy: EGLDisplay, attribute: number): number | undefined;
+    /**
+     * eglQuerySurface
+     * @param attribute egl.EGLConfigAttribute
+     */
+    query(dpy: EGLDisplay, attribute: EGLConfigAttribute | number): number | undefined;
 
     /**
      * eglBindTexImage
      */
-    bindTexImage(dpy: EGLDisplay, buffer: number): boolean;
+    bindTexImage(dpy: EGLDisplay, buffer: EGLConfigAttribute | number): boolean;
 
     /**
      * eglReleaseTexImage
      */
-    releaseTexImage(dpy: EGLDisplay, buffer: number): boolean;
+    releaseTexImage(dpy: EGLDisplay, buffer: EGLConfigAttribute | number): boolean;
   }
 
-  class EGLSync implements NativePointer {
+  @Sendable
+  class EGLSync {
     private constructor();
-
-    get id(): string;
   }
 
-  class EGLImageKHR implements NativePointer {
+  @Sendable
+  class EGLSyncKHR {
+    private constructor()
+  }
+
+  @Sendable
+  class EGLImage {
+    private constructor()
+  }
+
+  @Sendable
+  class EGLImageKHR {
     private constructor();
-
-    get id(): string;
   }
 
-  class EGLDisplay implements NativePointer {
+  @Sendable
+  class EGLDisplay {
     private constructor();
 
     /**
@@ -108,39 +109,10 @@ declare namespace egl {
       attrib_list?: number[]): EGLDisplay | undefined;
 
     /**
-     * EGLDisplay的id，可以转化成native指针
-     * @returns
-     */
-    get id(): string;
-
-    /**
-     * 是否已经终止
-     * @returns
-     */
-    get isTerminate(): boolean;
-
-    /**
-     * 是否初始化
-     * @returns
-     */
-    get isInitialized(): boolean;
-
-    get major(): number;
-
-    get minjor(): number;
-
-    /**
-     * 比较两个EGLDisplay是否相等
-     * @param value
-     * @returns
-     */
-    equal(value: EGLDisplay): boolean;
-
-    /**
      * 调用eglInitialize,调用成功后，可以获取major和minjor
      * @returns EGLDisplay初始化是否成功
      */
-    initialize(): boolean;
+    initialize(): EGLVersion | undefined;
 
     /**
      * 调用eglTerminate，终止与EGLDisplay的连接，终止连接后，调用其他方法会抛出异常
@@ -206,12 +178,12 @@ declare namespace egl {
     /**
      *对应eglGetConfigs
      */
-    getConfigs(count: number): EGLConfig[];
+    getConfigs(count: number): EGLConfig[] | undefined;
 
     /**
      *eglQueryString
      */
-    queryString(name: QueryStringNames): string;
+    queryString(name: QueryStringNames): string | undefined;
 
     /**
      *eglSwapBuffers
@@ -255,7 +227,7 @@ declare namespace egl {
      * https://registry.khronos.org/EGL/sdk/docs/man/html/eglCreatePlatformPixmapSurface.xhtml
      * @param attrib_list EGL_GL_COLORSPACE / EGL_VG_ALPHA_FORMAT / EGL_VG_COLORSPACE
      */
-    createPlatformPixmapSurface(config: EGLConfig, native_pixmap_ptr?: string,
+    createPlatformPixmapSurface(config: EGLConfig, pixmap?: image.PixelMap,
       attrib_list?: number[]): EGLSurface | undefined;
 
     /**
@@ -269,7 +241,7 @@ declare namespace egl {
      *https://registry.khronos.org/EGL/sdk/docs/man/html/eglCreateImage.xhtml
      * @parm attr_list EGL_GL_TEXTURE_LEVEL / EGL_GL_TEXTURE_ZOFFSET / EGL_IMAGE?PRESERVER
      */
-    createImageKHR(target: number, context: EGLContext, buffer: NativePointer,
+    createImageKHR(target: number, context: EGLContext, buffer: NativeBuffer,
       attrib_list?: number[]): EGLImageKHR | undefined;
 
     destroyImageKHR(image: EGLImageKHR): boolean;
@@ -1578,11 +1550,10 @@ declare namespace egl {
    */
   export function eglGetDisplay(eglNativeDisplayType?: string): EGLDisplay | undefined;
 
-  export function eglInitialize(dpy: EGLDisplay): EGLVersion
+  export function eglInitialize(dpy: EGLDisplay): EGLVersion | undefined
 
   export function eglChooseConfig(dpy: EGLDisplay, attrib_list: number[],
-    config_size: number): EGLConfig[];
-
+    config_size: number): EGLConfig[] | undefined;
 
   export function eglCreatePixmapSurface(dpy: EGLDisplay, config: EGLConfig, pixmap: image.PixelMap,
     attrib_list?: number[]): EGLSurface | undefined;
@@ -1607,7 +1578,7 @@ declare namespace egl {
 
   export function eglGetCurrentDisplay(): EGLDisplay | undefined;
 
-  export function eglMakeCurrent(dpy: EGLDisplay, draw: EGLSurface, read: EGLSurface,
+  export function eglMakeCurrent(dpy: EGLDisplay, draw: EGLSurface | undefined, read: EGLSurface | undefined,
     context: EGLContext): boolean;
 
   export function eglGetCurrentSurface(readdraw: READDRAW): EGLSurface | undefined;
@@ -1617,7 +1588,7 @@ declare namespace egl {
   /**
    *在arkTs中没啥用，只能用来判断有没有某个方法
    */
-  export function eglGetProcAddress(procName: string): string;
+  export function eglGetProcAddress(procName: string): string | undefined;
 
   /**
    * 查询成功返回number否则undefined
@@ -1645,8 +1616,8 @@ declare namespace egl {
 
   export function eglReleaseTexImage(dpy: EGLDisplay, surface: EGLSurface, buffer: number): boolean;
 
-  // export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: EGLBufferType, buffer: NativeBuffer,
-  //   config: EGLConfig, attrib_list?: number[]);
+  export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: number, buffer: NativeBuffer,
+    config: EGLConfig, attrib_list?: number[]): EGLSurface | undefined
 
   /**
    *https://registry.khronos.org/EGL/sdk/docs/man/html/eglSurfaceAttrib.xhtml
@@ -1692,7 +1663,7 @@ declare namespace egl {
    * https://registry.khronos.org/EGL/sdk/docs/man/html/eglCreatePlatformPixmapSurface.xhtml
    * @param attrib_list EGL_GL_COLORSPACE / EGL_VG_ALPHA_FORMAT / EGL_VG_COLORSPACE
    */
-  export function eglCreatePlatformPixmapSurface(dpy: EGLDisplay, config: EGLConfig, native_pixmap?: string,
+  export function eglCreatePlatformPixmapSurface(dpy: EGLDisplay, config: EGLConfig, pixmap: image.PixelMap,
     attrib_list?: number[]): EGLSurface | undefined;
 
   export function eglWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: number): boolean;
@@ -1702,12 +1673,16 @@ declare namespace egl {
    */
   export function eglCopyBuffers(dpy: EGLDisplay, surface: EGLSurface, target: image.PixelMap): boolean;
 
-  export function eglCreateImageKHR(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativePointer,
+  export function eglCreateImageKHR(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativeBuffer,
     attrib_list?: number[]): EGLImageKHR | undefined;
 
-  export function eglDestroyImageKHR(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativePointer,
-    attrib_list?: number[]): EGLImageKHR | undefined;
+  export function eglDestroyImageKHR(dpy: EGLDisplay, image: EGLImageKHR): boolean
 
 
+  export function eglDestroyImage(dpy: EGLDisplay, image: EGLImage): boolean
+
+  export function eglCreateSyncKHR(dpy: EGLDisplay, type: number, attrib_list?: number[]): EGLSyncKHR | undefined
+
+  export function eglDestroySyncKHR(dpy: EGLDisplay, sync: EGLSyncKHR): boolean
 
 }

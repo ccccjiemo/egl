@@ -11,127 +11,10 @@ export interface NativeBufferConfig {
 
 
 export interface EGLVersion {
-  major?: number;
-  minor?: number;
+  major: number;
+  minor: number;
 }
 
-interface EGLAttributeKeyValue {
-  attribute: number;
-  value?: number;
-}
-
-
-// export const eglCopyBuffers: (dpy: string, surface: EGLSurface, target: EGLNativePixmapType): boolean;
-// export function eglCreatePbufferFromClientBuffer(dpy: string, buftype: number, buffer: EGLClientBuffer,
-//   config: EGLConfig, attrib_list?: EGLAttribList): EGLSurface;
-/*export function eglCreateImage(dpy: string, context: EGLContext, target: number, buffer: EGLClientBuffer,
-  attrib_list: EGLAttribList): EGLImage;*/
-
-export const eglGetDisplay: (display_id?: string) => string;
-
-export const eglInitialize: (dpy: string, versions: EGLVersion) => boolean;
-
-export const eglChooseConfig: (dpy: string, attrib_list: number[], config_size: number) => string[];
-
-export const eglCreateContext: (dpy: string, config?: string, share_context?: string,
-  attrib_list?: number[]) => string;
-
-export const eglGetError: () => number;
-
-export const eglCreateWindowSurface: (dpy: string, config: string, surfaceId: string,
-  attrib_list?: number[]) => string;
-
-export const eglMakeCurrent: (dpy: string, draw?: string, read?: string,
-  context?: string) => boolean;
-
-export const eglCreatePbufferSurface: (dpy: string, config: string, attrib_list?: number[]) => string;
-
-export const eglDestroyContext: (dpy: string, context: string) => boolean;
-
-export const eglDestroySurface: (dpy: string, surface: string) => boolean;
-
-export const eglGetConfigAttrib: (dpy: string, config: string, attribute: number) => number | undefined;
-
-/**
- * 方法调用失败会返回一个空数组
- */
-export const eglGetConfigs: (dpy: string, config_size: number) => string[];
-
-export const eglGetCurrentDisplay: () => string | undefined;
-
-export const eglGetCurrentSurface: (readdraw: number) => string | undefined;
-
-export const eglGetProcAddress: (procName: string) => string;
-
-export const eglQueryContext: (dpy: string, context: string, attribute: number) => number | undefined;
-
-export const eglQueryString: (dpy: string, name: number) => string;
-
-export const eglQuerySurface: (dpy: string, surface: string, attribute: number) => number | undefined;
-
-export const eglSwapBuffers: (dpy: string, surface: string) => boolean;
-
-export const eglTerminate: (dpy: string) => boolean;
-
-export const eglWaitGL: () => boolean;
-
-export const eglWaitNative: (engine: number) => boolean;
-
-export const eglBindTexImage: (dpy: string, surface: string, buffer: number) => boolean;
-
-export const eglReleaseTexImage: (dpy: string, surface: string, buffer: number) => boolean;
-
-export const eglSurfaceAttrib: (dpy: string, surface: string, attribute: number, value: number) => boolean;
-
-export const eglSwapInterval: (dpy: string, interval: number) => boolean;
-
-export const eglBindAPI: (api: number) => boolean;
-
-export const eglQueryAPI: () => number;
-
-export const eglReleaseThread: () => boolean
-
-export const eglWaitClient: () => boolean;
-
-export const eglGetCurrentContext: () => string | undefined;
-
-export const eglCreateSync: (dpy: string, type: number, attrib_list?: number[]) => string | undefined;
-
-export const eglDestroySync: (dpy: string, sync: string) => boolean;
-
-export const eglClientWaitSync: (dpy: string, sync: string, flags: number, timeout: number) => number;
-
-export const eglGetSyncAttrib: (dpy: string, sync: string, attribute: number) => number | undefined;
-
-export const eglDestroyImage: (dpy: string, image: string) => boolean;
-
-export const eglGetPlatformDisplay: (platform: number, native_display?: string,
-  attrib_list?: number[]) => string;
-
-export const eglCreatePlatformWindowSurface: (dpy: string, config?: string, native_window?: string,
-  attrib_list?: number[]) => string | undefined;
-
-export const eglCreatePlatformPixmapSurface: (dpy: string, config?: string, native_pixmap?: string,
-  attrib_list?: number[]) => string | undefined;
-
-export const eglWaitSync: (dpy: string, sync: string, flags: number) => boolean;
-
-export const eglCreatePixmapSurface: (dpy: string, config: string, pixmap: image.PixelMap,
-  attrib_list?: number[]) => string | undefined;
-
-export const eglCreateImageKHR: (dpy: string, context: string, target: number, buffer?: string,
-  attrib_list?: number[]) => string | undefined;
-
-export const createNativeBuffer: (options: NativeBufferConfig) => string | undefined;
-
-export const releaseNativeBuffer: (buffer: string) => number;
-
-export const eglCreatePbufferFromClientBuffer: (dpy: string, buftype: number, buffer: string,
-  config: string, attrib_list?: number[]) => string;
-
-export const eglCopyBuffers: (dpy: string, surface: string, target: image.PixelMap) => boolean;
-
-export const eglDestroyImageKHR: (dpy: string, image: string) => boolean;
 
 @Sendable
 export class EGLDisplay {
@@ -144,13 +27,13 @@ export class EGLDisplay {
   static getPlatformDisplay(platform: number, native_display?: string,
     attrib_list?: number[]): EGLDisplay | undefined
 
-  initialize(): boolean
+  initialize(): EGLVersion | undefined
 
 
   terminate(): boolean
 
 
-  chooseConfig(attrib_list: number[], count?: number): EGLConfig[]
+  chooseConfig(attrib_list: number[], count?: number): EGLConfig[] | undefined
 
 
   createContext(config: EGLConfig, share_context?: EGLContext, attrib_list?: number[]): EGLContext | undefined
@@ -226,7 +109,7 @@ export class EGLConfig {
 
 @Sendable
 export class EGLContext {
-  private constructor(id: string)
+  private constructor()
 
   static getCurrentContext(): EGLContext | undefined
 
@@ -235,22 +118,146 @@ export class EGLContext {
 
 @Sendable
 export class EGLSurface {
-  private constructor(id: string)
+  private constructor()
 
   static getCurrentSurface(readdraw: number): EGLSurface | undefined
-
 
   setAttribute(dpy: EGLDisplay, attribute: number, value: number): boolean
 
   query(dpy: EGLDisplay, attribute: number): number | undefined
 
-
   bindTexImage(dpy: EGLDisplay, buffer: number): boolean
-
 
   releaseTexImage(dpy: EGLDisplay, buffer: number): boolean
 }
 
+@Sendable
+export class EGLImage {
+  private constructor()
+}
 
+@Sendable
+export class EGLImageKHR {
+  private constructor()
+}
 
+@Sendable
+export class EGLSync {
+  private constructor()
+}
 
+@Sendable
+export class EGLSyncKHR {
+  private constructor()
+}
+
+@Sendable
+export class NativeBuffer {
+  constructor(config: NativeBufferConfig)
+
+  destroy(): boolean
+}
+
+export function eglGetDisplay(display_id?: string): EGLDisplay | undefined;
+
+export function eglInitialize(dpy: EGLDisplay): EGLVersion | undefined;
+
+export function eglChooseConfig(dpy: EGLDisplay, attrib_list: number[], config_size?: number): EGLConfig[] | undefined
+
+export function eglGetError(): number;
+
+export function eglCreateWindowSurface(dpy: EGLDisplay, config: EGLConfig, surfaceId: string,
+  attrib_list?: number[]): EGLSurface | undefined
+
+export function eglMakeCurrent(dpy: EGLDisplay, draw: EGLSurface | undefined, read: EGLSurface | undefined,
+  ctx: EGLContext): boolean;
+
+export function eglCreatePbufferSurface(dpy: EGLDisplay, config: EGLConfig,
+  attrib_list?: number[]): EGLSurface | undefined
+
+export function eglDestroyContext(dpy: EGLDisplay, context: EGLContext): boolean
+
+export function eglDestroySurface(dpy: EGLDisplay, surface: EGLSurface): boolean
+
+export function eglGetConfigAttrib(dpy: EGLDisplay, config: EGLConfig, attribute: number): number | undefined
+
+export function eglGetConfigs(dpy: EGLDisplay, config_size?: number): EGLConfig[] | undefined
+
+export function eglGetCurrentDisplay(): EGLDisplay | undefined
+
+export function eglGetCurrentSurface(readdraw: number): EGLSurface | undefined
+
+export function eglGetProcAddress(procName: string): string | undefined
+
+export function eglQueryContext(dpy: EGLDisplay, context: EGLContext, attribute: number): number | undefined
+
+export function eglQueryString(dpy: EGLDisplay, name: number): string | undefined
+
+export function eglQuerySurface(dpy: EGLDisplay, surface: EGLSurface, attribute: number): number | undefined
+
+export function eglSwapBuffers(dpy: EGLDisplay, surface: EGLSurface): boolean
+
+export function eglTerminate(dpy: EGLDisplay): boolean
+
+export function eglWaitGL(): boolean
+
+export function eglWaitNative(engine: number): boolean
+
+export function eglBindTexImage(dpy: EGLDisplay, surface: EGLSurface, buffer: number): boolean
+
+export function eglReleaseTexImage(dpy: EGLDisplay, surface: EGLSurface, buffer: number): boolean
+
+export function eglSurfaceAttrib(dpy: EGLDisplay, surface: EGLSurface, attribute: number, value: number): boolean
+
+export function eglSwapInterval(dpy: EGLDisplay, interval: number): boolean
+
+export function eglBindAPI(api: number): boolean
+
+export function eglQueryAPI(): number
+
+export function eglReleaseThread(): boolean
+
+export function eglWaitClient(): boolean
+
+export function eglGetCurrentContext(): EGLContext | undefined
+
+export function eglCreateSync(dpy: EGLDisplay, type: number, attrib_list?: number[]): EGLSync | undefined
+
+export function eglDestroySync(dpy: EGLDisplay, sync: EGLSync): boolean
+
+export function eglClientWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: number, timeout: number): number
+
+export function eglGetSyncAttrib(dpy: EGLDisplay, sync: EGLSync, attribute: number): number | undefined
+
+export function eglCreateImage(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativeBuffer,
+  attrib_list?: number[]): EGLImage | undefined
+
+export function eglDestroyImage(dpy: EGLDisplay, image: EGLImage): boolean
+
+export function eglGetPlatformDisplay(platform: number, native_display?: string,
+  attrib_list?: number[]): EGLDisplay | undefined
+
+export function eglCreatePlatformWindowSurface(dpy: EGLDisplay, config: EGLConfig, native_window?: string,
+  attrib_list?: number[]): EGLSurface | undefined
+
+export function eglCreatePlatformPixmapSurface(dpy: EGLDisplay, config: EGLConfig, native_pixmap: PixelMap,
+  attrib_list?: number[]): EGLSurface | undefined
+
+export function eglWaitSync(dpy: EGLDisplay, sync: EGLSync, flags: number): boolean
+
+export function eglCreatePixmapSurface(dpy: EGLDisplay, config: EGLConfig, pixmap: PixelMap,
+  attrib_list?: number[]): EGLSurface | undefined
+
+export function eglCreateImageKHR(dpy: EGLDisplay, context: EGLContext, target: number, buffer: NativeBuffer,
+  attrib_list?: number[]): EGLImageKHR | undefined
+
+export function eglCreatePbufferFromClientBuffer(dpy: EGLDisplay, buftype: number, buffer: NativeBuffer,
+  config: EGLConfig, attrib_list?: number[]): EGLSurface | undefined
+
+export function eglCopyBuffers(dpy: EGLDisplay, surface: EGLSurface, target: PixelMap): boolean
+
+export function eglDestroyImageKHR(dpy: EGLDisplay, image: EGLImageKHR): boolean
+
+export function eglCreateSyncKHR(dpy: EGLDisplay, type: number, attrib_list?: number[]): EGLSyncKHR | undefined
+
+export function eglDestroySyncKHR(dpy: EGLDisplay, sync: EGLSyncKHR): boolean

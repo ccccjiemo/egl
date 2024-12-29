@@ -88,11 +88,12 @@ napi_value StandardEGLDisplay::JSChooseConfig(napi_env env, napi_callback_info i
         napi_get_value_uint32(env, argv[1], &count);
     }
 
-    EGLConfig *configs = nullptr;
+    EGLConfig *configs = new EGLConfig[count];
     EGLint num_config = 0;
     if (!eglChooseConfig(display, attrib_list, configs, count, &num_config)) {
         return nullptr;
     }
+    auto error = eglGetError();
     return StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
 }
 
@@ -171,10 +172,10 @@ napi_value StandardEGLDisplay::JSGetConfigs(napi_env env, napi_callback_info inf
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
     EGLDisplay dpy = GetEGLDisplay(env, _this);
-    EGLConfig *configs = nullptr;
     EGLint num_config = 0;
     EGLint config_size = 0;
     napi_get_value_int32(env, argv[0], &config_size);
+    EGLConfig *configs = new EGLConfig[config_size];
     if (!eglGetConfigs(dpy, configs, config_size, &num_config))
         return nullptr;
 
