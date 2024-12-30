@@ -27,7 +27,7 @@ napi_value JSEGLGetDisplay(napi_env env, napi_value display_id) {
     return StandardEGLDisplay::CreateEGLDisplay(env, display);
 }
 napi_value JSEGLInitialize(napi_env env, napi_value dpy) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint major = 0, minor = 0;
     if (eglInitialize(display, &major, &minor)) {
         napi_value result = nullptr;
@@ -40,7 +40,7 @@ napi_value JSEGLInitialize(napi_env env, napi_value dpy) {
     }
 }
 napi_value JSEGLChooseConfig(napi_env env, napi_value dpy, napi_value attrib_list, napi_value config_size) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint *attrib_list_ = getEGLintList(env, attrib_list);
     napi_valuetype type;
     napi_typeof(env, config_size, &type);
@@ -49,12 +49,13 @@ napi_value JSEGLChooseConfig(napi_env env, napi_value dpy, napi_value attrib_lis
         napi_get_value_uint32(env, config_size, &count);
     }
 
-    EGLConfig *configs = nullptr;
+    EGLConfig *configs = new EGLConfig[count];
     EGLint num_config = 0;
     if (!eglChooseConfig(display, attrib_list_, configs, count, &num_config)) {
         freeEGLIntList(&attrib_list_);
         return nullptr;
     }
+    delete[] configs;
     freeEGLIntList(&attrib_list_);
     return StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
 }
@@ -62,8 +63,8 @@ napi_value JSEGLGetError(napi_env env) { return NapiCreateInt32(env, eglGetError
 napi_value JSEGLCreateWindowSurface(napi_env env, napi_value dpy, napi_value config, napi_value surfaceId,
                                     napi_value attrib_list) {
 
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLConfig config_ = StandardEGLConfig::GetEGLConfig(env, config);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLConfig config_ = GetSendable<EGLConfig>(env, config);
     void *win = getNativeWindow(env, surfaceId);
     EGLint *attrib_list_ = getEGLintList(env, attrib_list);
     EGLSurface surface = eglCreateWindowSurface(display, config_, static_cast<EGLNativeWindowType>(win), attrib_list_);
@@ -72,33 +73,33 @@ napi_value JSEGLCreateWindowSurface(napi_env env, napi_value dpy, napi_value con
 }
 napi_value JSEGLMakeCurrent(napi_env env, napi_value dpy, napi_value surface_draw, napi_value surface_read,
                             napi_value ctx) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface draw = StandardEGLSurface::GetEGLSurface(env, surface_draw);
-    EGLSurface read = StandardEGLSurface::GetEGLSurface(env, surface_read);
-    EGLContext context = StandardEGLContext::GetEGLContext(env, ctx);
-    return NapiCreateBoolean(env, eglMakeCurrent(dpy, draw, read, context));
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface draw = GetSendable<EGLSurface>(env, surface_draw);
+    EGLSurface read = GetSendable<EGLSurface>(env, surface_read);
+    EGLContext context = GetSendable<EGLContext>(env, ctx);
+    return NapiCreateBoolean(env, eglMakeCurrent(display, draw, read, context));
 }
 napi_value JSEGLCreatePbufferSurface(napi_env env, napi_value dpy, napi_value config, napi_value attrib_list) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLConfig config_ = StandardEGLConfig::GetEGLConfig(env, config);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLConfig config_ = GetSendable<EGLConfig>(env, config);
     EGLint *attrib_list_ = getEGLintList(env, attrib_list);
     EGLSurface surface = eglCreatePbufferSurface(display, config_, attrib_list_);
     freeEGLIntList(&attrib_list_);
     return StandardEGLSurface::CreateEGLSurface(env, surface);
 }
 napi_value JSEGLDestroyContext(napi_env env, napi_value dpy, napi_value context) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLContext ctx = StandardEGLContext::GetEGLContext(env, context);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLContext ctx = RemoveSendable<EGLContext>(env, context);
     return NapiCreateBoolean(env, eglDestroyContext(display, ctx));
 }
 napi_value JSEGLDestroySurface(napi_env env, napi_value dpy, napi_value surface) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = RemoveSendable<EGLSurface>(env, surface);
     return NapiCreateBoolean(env, eglDestroySurface(display, surface_));
 }
 napi_value JSEGLGetConfigAttrib(napi_env env, napi_value dpy, napi_value config, napi_value attribute) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLConfig config_ = StandardEGLConfig::GetEGLConfig(env, config);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLConfig config_ = GetSendable<EGLConfig>(env, config);
     EGLint attribute_ = 0, value = 0;
     napi_get_value_int32(env, attribute, &attribute_);
     if (!eglGetConfigAttrib(display, config_, attribute_, &value)) {
@@ -107,15 +108,17 @@ napi_value JSEGLGetConfigAttrib(napi_env env, napi_value dpy, napi_value config,
     return NapiCreateInt32(env, value);
 }
 napi_value JSEGLGetConfigs(napi_env env, napi_value dpy, napi_value config_size) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLConfig *configs = nullptr;
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint num_config = 0;
     EGLint config_size_ = 0;
     napi_get_value_int32(env, config_size, &config_size_);
-    if (!eglGetConfigs(display, configs, config_size_, &num_config))
-        return nullptr;
-
-    return StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
+    EGLConfig *configs = new EGLConfig[config_size_];
+    napi_value result = nullptr;
+    if (eglGetConfigs(display, configs, config_size_, &num_config)) {
+        result = StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
+    }
+    delete[] configs;
+    return result;
 }
 napi_value JSEGLGetCurrentDisplay(napi_env env) {
     EGLDisplay display = eglGetCurrentDisplay();
@@ -137,8 +140,8 @@ napi_value JSEGLGetProcAddress(napi_env env, napi_value procName) {
     return Ptr::NapiCreatePtr(env, static_cast<void *>(&proc));
 }
 napi_value JSEGLQueryContext(napi_env env, napi_value dpy, napi_value context, napi_value attribute) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLContext context_ = StandardEGLContext::GetEGLContext(env, context);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLContext context_ = GetSendable<EGLContext>(env, context);
     EGLint attribute_ = 0, value = 0;
     napi_get_value_int32(env, attribute, &attribute_);
 
@@ -148,7 +151,7 @@ napi_value JSEGLQueryContext(napi_env env, napi_value dpy, napi_value context, n
     return NapiCreateInt32(env, value);
 }
 napi_value JSEGLQueryString(napi_env env, napi_value dpy, napi_value name) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint name_ = 0;
     napi_get_value_int32(env, name, &name_);
     const char *str = eglQueryString(display, name_);
@@ -157,8 +160,8 @@ napi_value JSEGLQueryString(napi_env env, napi_value dpy, napi_value name) {
     return result;
 }
 napi_value JSEGLQuerySurface(napi_env env, napi_value dpy, napi_value surface, napi_value attribute) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = GetSendable<EGLSurface>(env, surface);
     EGLint attribute_ = 0, value = 0;
     napi_get_value_int32(env, attribute, &attribute_);
     if (!eglQuerySurface(display, surface_, attribute_, &value))
@@ -166,12 +169,12 @@ napi_value JSEGLQuerySurface(napi_env env, napi_value dpy, napi_value surface, n
     return NapiCreateInt32(env, value);
 }
 napi_value JSEGLSwapBuffers(napi_env env, napi_value dpy, napi_value surface) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = GetSendable<EGLSurface>(env, surface);
     return NapiCreateBoolean(env, eglSwapBuffers(display, surface_));
 }
 napi_value JSEGLTerminate(napi_env env, napi_value dpy) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     return NapiCreateBoolean(env, eglTerminate(display));
 }
 napi_value JSEGLWaitGL(napi_env env) { return NapiCreateBoolean(env, eglWaitGL()); }
@@ -181,30 +184,30 @@ napi_value JSEGLWaitNative(napi_env env, napi_value engine) {
     return NapiCreateBoolean(env, eglWaitNative(engine_));
 }
 napi_value JSEGLBindTexImage(napi_env env, napi_value dpy, napi_value surface, napi_value buffer) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = GetSendable<EGLSurface>(env, surface);
     EGLint buffer_ = 0;
     napi_get_value_int32(env, buffer, &buffer_);
     return NapiCreateBoolean(env, eglBindTexImage(display, surface_, buffer_));
 }
 napi_value JSEGLReleaseTexImage(napi_env env, napi_value dpy, napi_value surface, napi_value buffer) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = GetSendable<EGLSurface>(env, surface);
     EGLint buffer_ = 0;
     napi_get_value_int32(env, buffer, &buffer_);
     return NapiCreateBoolean(env, eglReleaseTexImage(display, surface_, buffer_));
 }
 napi_value JSEGLSurfaceAttrib(napi_env env, napi_value dpy, napi_value surface, napi_value attribute,
                               napi_value value) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSurface surface_ = StandardEGLSurface::GetEGLSurface(env, surface);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSurface surface_ = GetSendable<EGLSurface>(env, surface);
     EGLint attribute_ = 0, value_ = 0;
     napi_get_value_int32(env, attribute, &attribute_);
     napi_get_value_int32(env, value, &value_);
     return NapiCreateBoolean(env, eglSurfaceAttrib(display, surface_, attribute_, value_));
 }
 napi_value JSEGLSwapInterval(napi_env env, napi_value dpy, napi_value interval) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint interval_ = getEGLInt(env, interval);
     return NapiCreateBoolean(env, eglSwapInterval(display, interval_));
 }
@@ -220,7 +223,7 @@ napi_value JSEGLGetCurrentContext(napi_env env) {
     return StandardEGLContext::CreateEGLContext(env, context);
 }
 napi_value JSEGLCreateSync(napi_env env, napi_value dpy, napi_value type, napi_value attrib_list) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLenum type_ = getEGLenum(env, type);
     EGLAttrib *attrib_list_ = getEGLAttribList(env, attrib_list);
     EGLSync sync = eglCreateSync(display, type_, attrib_list_);
@@ -228,13 +231,13 @@ napi_value JSEGLCreateSync(napi_env env, napi_value dpy, napi_value type, napi_v
     return StandardEGLSync::CreateEGLSync(env, sync);
 }
 napi_value JSEGLDestroySync(napi_env env, napi_value dpy, napi_value sync) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSync sync_ = StandardEGLSync::GetEGLSync(env, sync);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSync sync_ = RemoveSendable<EGLSync>(env, sync);
     return NapiCreateBoolean(env, eglDestroySync(display, sync_));
 }
 napi_value JSEGLClientWaitSync(napi_env env, napi_value dpy, napi_value sync, napi_value flags, napi_value timeout) {
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, dpy);
-    EGLSync sync_ = StandardEGLSync::GetEGLSync(env, sync);
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLSync sync_ = GetSendable<EGLSync>(env, sync);
     EGLint flags_ = getEGLInt(env, flags);
     EGLTime timeout_ = getEGLTime(env, timeout);
     return NapiCreateInt32(env, eglClientWaitSync(display, sync_, flags_, timeout_));
@@ -251,7 +254,7 @@ napi_value JSEGLGetSyncAttrib(napi_env env, napi_value dpy, napi_value sync, nap
 }
 napi_value JSEGLDestroyImage(napi_env env, napi_value dpy, napi_value image) {
     EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
-    EGLImage image_ = GetSendable<EGLImage>(env, image);
+    EGLImage image_ = RemoveSendable<EGLImage>(env, image);
     return NapiCreateBoolean(env, eglDestroyImage(display, image_));
 }
 napi_value JSEGLGetPlatformDisplay(napi_env env, napi_value platform, napi_value native_display,
@@ -349,7 +352,7 @@ napi_value JSEGLDestroyImageKHR(napi_env env, napi_value dpy, napi_value image) 
     if (eglDestroyImageKHR_ == nullptr)
         return NapiCreateBoolean(env, false);
     EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
-    EGLImageKHR image_ = GetSendable<EGLImageKHR>(env, image);
+    EGLImageKHR image_ = RemoveSendable<EGLImageKHR>(env, image);
     return NapiCreateBoolean(env, eglDestroyImageKHR_(display, image_));
 }
 
@@ -371,7 +374,18 @@ napi_value JSEGLDestroySyncKHR(napi_env env, napi_value dpy, napi_value sync) {
     if (eglDestroySyncKHR_ == nullptr)
         return NapiCreateBoolean(env, false);
     EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
-    EGLSyncKHR sync_ = GetSendable<EGLSyncKHR>(env, sync);
+    EGLSyncKHR sync_ = RemoveSendable<EGLSyncKHR>(env, sync);
     return NapiCreateBoolean(env, eglDestroySyncKHR_(display, sync_));
+}
+
+napi_value JSEGLCreateContext(napi_env env, napi_value dpy, napi_value config, napi_value share_context,
+                              napi_value attrib_list) {
+    EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
+    EGLConfig config_ = GetSendable<EGLConfig>(env, config);
+    EGLContext ctx = GetSendable<EGLContext>(env, share_context);
+    EGLint *attrib_list_ = getEGLintList(env, attrib_list);
+    EGLContext context = eglCreateContext(display, config_, ctx, attrib_list_);
+    freeEGLIntList(&attrib_list_);
+    return StandardEGLContext::CreateEGLContext(env, context);
 }
 }

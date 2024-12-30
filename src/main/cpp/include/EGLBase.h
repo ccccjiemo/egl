@@ -64,6 +64,7 @@ napi_value JSEGLCopyBuffers(napi_env env, napi_value dpy, napi_value surface, na
 napi_value JSEGLDestroyImageKHR(napi_env env, napi_value dpy, napi_value image);
 napi_value JSEGLCreateSyncKHR(napi_env env, napi_value dpy, napi_value type, napi_value attrib_list);
 napi_value JSEGLDestroySyncKHR(napi_env env, napi_value dpy, napi_value sync);
+napi_value JSEGLCreateContext(napi_env env, napi_value dpy, napi_value config, napi_value share_context, napi_value attrib_list);
 } // namespace EGLBase
 
 #endif // GLTEST_EGLBASE_H

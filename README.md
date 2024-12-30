@@ -82,7 +82,6 @@ display?.destroyImageKHR(image)
 
 ### 可用API
 
-
 | api                              | 
 |----------------------------------| 
 | eglGetDisplay                    |
@@ -90,6 +89,7 @@ display?.destroyImageKHR(image)
 | eglChooseConfig                  |
 | eglGetError                      |
 | eglCreateWindowSurface           |
+| eglCreateContext                 |
 | eglMakeCurrent                   |
 | eglCreatePbufferSurface          |
 | eglDestroyContext                |

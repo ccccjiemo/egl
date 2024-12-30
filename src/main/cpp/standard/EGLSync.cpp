@@ -33,23 +33,3 @@ napi_value StandardEGLSync::CreateEGLSync(napi_env env, EGLSync sync) {
 
     return instance;
 }
-EGLSync StandardEGLSync::GetEGLSync(napi_env env, napi_value value) {
-    napi_valuetype type;
-    napi_typeof(env, value, &type);
-    if (napi_undefined == type)
-        return nullptr;
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLSync", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    return static_cast<EGLSync>(result);
-}
-EGLSync StandardEGLSync::GetEGLSync(napi_env env, napi_callback_info info){
-    napi_value _this = nullptr;
-    if (napi_ok != napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr)) {
-        napi_throw_error(env, "EGLSync", "napi_get_cb_info failed");
-        return nullptr;
-    }
-    return GetEGLSync(env, _this);
-}

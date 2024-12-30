@@ -17,8 +17,7 @@ public:
     static napi_value CreateEGLConfig(napi_env env, EGLConfig config);
     static napi_value CreateEGLConfigList(napi_env env, EGLConfig *config, size_t size);
     static napi_value JSGetConfigAttrib(napi_env env, napi_callback_info info);
-    static EGLConfig GetEGLConfig(napi_env env, napi_value value);
-    static EGLConfig GetEGLConfig(napi_env env, napi_callback_info info);
+
 };
 
 

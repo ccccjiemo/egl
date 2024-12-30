@@ -1,0 +1,1 @@
+export { EGLDisplay } from 'libegl.so'

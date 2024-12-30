@@ -5,7 +5,7 @@
 // please include "napi/native_api.h".
 
 #include "EGLSurface.h"
-#include "EGLDisplay.h"
+#include "EGLBase.h"
 #include "utils.h"
 
 napi_ref StandardEGLSurface::cons = nullptr;
@@ -30,28 +30,7 @@ napi_value StandardEGLSurface::CreateEGLSurface(napi_env env, EGLSurface surface
         napi_throw_error(env, "EGLSurface", "napi_wrap_sendable failed");
         return nullptr;
     }
-
     return instance;
-}
-EGLSurface StandardEGLSurface::GetEGLSurface(napi_env env, napi_value value) {
-    napi_valuetype type;
-    napi_typeof(env, value, &type);
-    if (napi_undefined == type)
-        return nullptr;
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLSurface", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    return static_cast<EGLSurface>(result);
-}
-EGLSurface StandardEGLSurface::GetEGLSurface(napi_env env, napi_callback_info info) {
-    napi_value _this = nullptr;
-    if (napi_ok != napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr)) {
-        napi_throw_error(env, "EGLSurface", "napi_get_cb_info failed");
-        return nullptr;
-    }
-    return GetEGLSurface(env, _this);
 }
 
 napi_value StandardEGLSurface::JSGetCurrentSurface(napi_env env, napi_callback_info info) {
@@ -69,43 +48,26 @@ napi_value StandardEGLSurface::JSSetAttribute(napi_env env, napi_callback_info i
     napi_value argv[3]{nullptr};
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
-    EGLDisplay dpy = StandardEGLDisplay::GetEGLDisplay(env, argv[0]);
-    EGLSurface surface = GetEGLSurface(env, _this);
-    EGLint attribute = 0, value = 0;
-    napi_get_value_int32(env, argv[1], &attribute);
-    napi_get_value_int32(env, argv[2], &value);
-    return NapiCreateInt32(env, eglSurfaceAttrib(dpy, surface, attribute, value));
+    return EGLBase::JSEGLSurfaceAttrib(env, argv[0], _this, argv[1], argv[2]);
 }
 napi_value StandardEGLSurface::JSQuery(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value argv[2]{nullptr};
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
-    EGLDisplay dpy = StandardEGLDisplay::GetEGLDisplay(env, argv[0]);
-    EGLSurface surface = GetEGLSurface(env, _this);
-    EGLint attribute = 0, value = 0;
-    napi_get_value_int32(env, argv[1], &attribute);
-    return NapiCreateInt32(env, eglQuerySurface(dpy, surface, attribute, &value));
+    return EGLBase::JSEGLQuerySurface(env, argv[0], _this, argv[1]);
 }
 napi_value StandardEGLSurface::JSBindTexImage(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value argv[2]{nullptr};
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
-    EGLDisplay dpy = StandardEGLDisplay::GetEGLDisplay(env, argv[0]);
-    EGLSurface surface = GetEGLSurface(env, _this);
-    EGLint buffer = 0;
-    napi_get_value_int32(env, argv[1], &buffer);
-    return NapiCreateInt32(env, eglBindTexImage(dpy, surface, buffer));
+    return EGLBase::JSEGLBindTexImage(env, argv[0], _this, argv[1]);
 }
 napi_value StandardEGLSurface::JSReleaseTexImage(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value argv[2]{nullptr};
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
-    EGLDisplay dpy = StandardEGLDisplay::GetEGLDisplay(env, argv[0]);
-    EGLSurface surface = GetEGLSurface(env, _this);
-    EGLint buffer = 0;
-    napi_get_value_int32(env, argv[1], &buffer);
-    return NapiCreateInt32(env, eglReleaseTexImage(dpy, surface, buffer));
+    return EGLBase::JSEGLReleaseTexImage(env, argv[0], _this, argv[1]);
 }

@@ -32,20 +32,4 @@ napi_value StandardEGLImage::CreateEGLImage(napi_env env, EGLImage image) {
 
     return instance;
 }
-EGLImage StandardEGLImage::GetEGLImage(napi_env env, napi_value value) {
-    napi_valuetype type;
-    napi_typeof(env, value, &type);
-    if (napi_undefined == type)
-        return nullptr;
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLImage", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    return static_cast<EGLImage>(result);
-}
-EGLImage StandardEGLImage::GetEGLImage(napi_env env, napi_callback_info info) {
-    napi_value _this = nullptr;
-    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);
-    return GetEGLImage(env, _this);
-}
+

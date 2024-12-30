@@ -32,23 +32,3 @@ napi_value StandardEGLSyncKHR::CreateEGLSyncKHR(napi_env env, EGLSyncKHR sync) {
 
     return instance;
 }
-EGLSyncKHR StandardEGLSyncKHR::GetEGLSyncKHR(napi_env env, napi_value value) {
-    napi_valuetype type;
-    napi_typeof(env, value, &type);
-    if (napi_undefined == type)
-        return nullptr;
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLSyncKHR", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    return static_cast<EGLSurface>(result);
-}
-EGLSyncKHR StandardEGLSyncKHR::GetEGLSyncKHR(napi_env env, napi_callback_info info){
-    napi_value _this = nullptr;
-    if (napi_ok != napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr)) {
-        napi_throw_error(env, "EGLSyncKHR", "napi_get_cb_info failed");
-        return nullptr;
-    }
-    return GetEGLSyncKHR(env, _this);
-}

@@ -16,9 +16,6 @@ public:
     static napi_value JSGetCurrentContext(napi_env env, napi_callback_info info);
     static napi_value JSQuery(napi_env env, napi_callback_info info);
     static napi_value CreateEGLContext(napi_env env, EGLContext context);
-    static EGLContext GetEGLContext(napi_env env, napi_value value);
-    static EGLContext GetEGLContext(napi_env env, napi_callback_info info);
-    
 };
 
 #endif // GLTEST_EGLCONTEXT_H

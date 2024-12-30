@@ -1,5 +1,4 @@
 import { image } from "@kit.ImageKit";
-import { lang } from "@kit.ArkTS";
 
 export interface NativeBufferConfig {
   width: number;
@@ -29,75 +28,54 @@ export class EGLDisplay {
 
   initialize(): EGLVersion | undefined
 
-
   terminate(): boolean
-
 
   chooseConfig(attrib_list: number[], count?: number): EGLConfig[] | undefined
 
-
   createContext(config: EGLConfig, share_context?: EGLContext, attrib_list?: number[]): EGLContext | undefined
 
-
-  createSurfaceWindow(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined
-
+  createWindowSurface(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined
 
   makeCurrent(draw: EGLSurface | undefined, read: EGLSurface | undefined, context: EGLContext | undefined): boolean
 
-
   createPbufferSurface(config: EGLConfig, attrib_list?: number[]): EGLSurface | undefined
-
 
   destroyContext(context: EGLContext): boolean
 
-
   destroySurface(surface: EGLSurface): boolean
 
+  getConfigs(count: number): EGLConfig[] | undefined
 
-  getConfigs(count: number): EGLConfig[]
-
-
-  queryString(name: number): string
+  queryString(name: number): string | undefined
 
   swapBuffers(surface: EGLSurface): boolean
 
+  createSync(type: number, attrib_list?: number[]): EGLSync | undefined
 
-  // createSync(type: number, attrib_list?: number[]): EGLSync | undefined
-  //
-  //
-  // destroySync(sync: EGLSync): boolean
-  //
-  //
-  // clientWaitSync(sync: EGLSync, flags: number, timeout: number): number
-  //
-  //
-  // waitSync(sync: EGLSync, flags: number): boolean
-  //
-  //
-  // getSyncAttrib(sync: EGLSync, attribute: number): number | undefined
-  //
-  //
-  // swapInterval(interval: number): boolean
-  //
-  //
-  // createPlatformPixmapSurface(config: EGLConfig, native_pixmap_ptr?: string,
-  //   attrib_list?: number[]): EGLSurface | undefined
-  //
-  //
-  // createPlatformWindowSurface(config: EGLConfig, native_window_ptr?: string,
-  //   attrib_list?: number[]): EGLSurface | undefined
-  //
-  //
-  // createImageKHR(target: number, context: EGLContext, buffer?: NativePointer,
-  //   attrib_list?: number[]): EGLImageKHR | undefined
-  //
-  // destroyImageKHR(image: EGLImageKHR): boolean
-  //
-  //
-  // copyBuffers(surface: EGLSurface, target: image.PixelMap): boolean
-  //
-  //
-  // createPixmapSurface(config: EGLConfig, pixmap: image.PixelMap, attrib_list?: number[]): EGLSurface | undefined
+  destroySync(sync: EGLSync): boolean
+
+  clientWaitSync(sync: EGLSync, flags: number, timeout: number): number
+
+  waitSync(sync: EGLSync, flags: number): boolean
+
+  getSyncAttrib(sync: EGLSync, attribute: number): number | undefined
+
+  swapInterval(interval: number): boolean
+
+  createPlatformPixmapSurface(config: EGLConfig, native_pixmap_ptr?: string,
+    attrib_list?: number[]): EGLSurface | undefined
+
+  createPlatformWindowSurface(config: EGLConfig, native_window_ptr?: string,
+    attrib_list?: number[]): EGLSurface | undefined
+
+  createImageKHR(target: number, context: EGLContext, buffer: NativeBuffer,
+    attrib_list?: number[]): EGLImageKHR | undefined
+
+  destroyImageKHR(image: EGLImageKHR): boolean
+
+  copyBuffers(surface: EGLSurface, target: image.PixelMap): boolean
+
+  createPixmapSurface(config: EGLConfig, pixmap: image.PixelMap, attrib_list?: number[]): EGLSurface | undefined
 }
 
 @Sendable
@@ -261,3 +239,6 @@ export function eglDestroyImageKHR(dpy: EGLDisplay, image: EGLImageKHR): boolean
 export function eglCreateSyncKHR(dpy: EGLDisplay, type: number, attrib_list?: number[]): EGLSyncKHR | undefined
 
 export function eglDestroySyncKHR(dpy: EGLDisplay, sync: EGLSyncKHR): boolean
+
+export function eglCreateContext(dpy: EGLDisplay, config: EGLConfig, share_context: EGLContext | undefined,
+  attrib_list?: number[]): EGLContext | undefined

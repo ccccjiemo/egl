@@ -7,7 +7,6 @@
   ],
   "homepage": "https://github.com/ccccjiemo/egl.git",
   "main": "Index.ets",
-  "types": "Index.d.ets",
   "author": "ccccjiemo",
   "license": "Apache-2.0",
   "packageType": "InterfaceHar",

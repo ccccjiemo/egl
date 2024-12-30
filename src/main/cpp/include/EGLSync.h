@@ -16,6 +16,5 @@ public:
     static napi_ref cons;
     static napi_value JSConstructor(napi_env env, napi_callback_info info);
     static napi_value CreateEGLSync(napi_env env, EGLSync sync);
-    static EGLSync GetEGLSync(napi_env env, napi_value value);
-    static EGLSync GetEGLSync(napi_env env, napi_callback_info info);
+
 };

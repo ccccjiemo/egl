@@ -14,8 +14,7 @@ public:
     static napi_ref cons;
     static napi_value JSConstructor(napi_env env, napi_callback_info info);
     static napi_value CreateEGLImage(napi_env env, EGLImage image);
-    static EGLImage GetEGLImage(napi_env env, napi_value value);
-    static EGLImage GetEGLImage(napi_env env, napi_callback_info info);
+
 };
 
 #endif // GLTEST_EGLIMAGE_H

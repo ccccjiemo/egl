@@ -8,6 +8,8 @@
 #define GLTEST_NAPIEGL_H
 #include "napi/native_api.h"
 
+
+
 namespace NapiEGL {
 napi_value NapiEGLGetDisplay(napi_env env, napi_callback_info info);
 napi_value NapiEGLInitialize(napi_env env, napi_callback_info info);
@@ -56,6 +58,7 @@ napi_value NapiEGLDestroyImageKHR(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreateSyncKHR(napi_env env, napi_callback_info info);
 napi_value NapiEGLDestroySyncKHR(napi_env env, napi_callback_info info);
 napi_value NapiEGLCreateImage(napi_env env, napi_callback_info info);
+napi_value NapiEGLCreateContext(napi_env env, napi_callback_info info);
 
 
 } // namespace NapiEGL

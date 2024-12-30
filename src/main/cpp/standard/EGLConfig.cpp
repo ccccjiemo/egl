@@ -5,8 +5,7 @@
 // please include "napi/native_api.h".
 
 #include "EGLConfig.h"
-#include "EGLDisplay.h"
-#include "utils.h"
+#include "EGLBase.h"
 
 napi_ref StandardEGLConfig::cons = nullptr;
 
@@ -43,42 +42,11 @@ napi_value StandardEGLConfig::CreateEGLConfigList(napi_env env, EGLConfig *confi
     return arr;
 }
 
-
-EGLConfig StandardEGLConfig::GetEGLConfig(napi_env env, napi_value value) {
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLDisplay", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    if (result == nullptr) {
-        napi_throw_error(env, "EGLConfig", "config is null pointer");
-        return nullptr;
-    }
-    return static_cast<EGLConfig>(result);
-}
-
-EGLConfig StandardEGLConfig::GetEGLConfig(napi_env env, napi_callback_info info) {
-    napi_value _this = nullptr;
-    if (napi_ok != napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr)) {
-        napi_throw_error(env, "EGLConfig", "napi_get_cb_info failed");
-        return nullptr;
-    }
-    return GetEGLConfig(env, _this);
-}
-
 napi_value StandardEGLConfig::JSGetConfigAttrib(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value argv[2]{nullptr};
     napi_value _this = nullptr;
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);
 
-    EGLDisplay display = StandardEGLDisplay::GetEGLDisplay(env, argv[0]);
-    EGLConfig config = GetEGLConfig(env, _this);
-    EGLint attribute = 0, value = 0;
-    napi_get_value_int32(env, argv[1], &attribute);
-    if (!eglGetConfigAttrib(display, config, attribute, &value)) {
-        return nullptr;
-    }
-
-    return NapiCreateInt32(env, value);
+    return EGLBase::JSEGLGetConfigAttrib(env, argv[0], _this, argv[1]);
 }

@@ -14,8 +14,7 @@ public:
     static napi_ref cons;
     static napi_value JSConstructor(napi_env env, napi_callback_info info);
     static napi_value CreateEGLImageKHR(napi_env env, EGLImageKHR image);
-    static EGLImageKHR GetEGLImageKHR(napi_env env, napi_value value);
-    static EGLImageKHR GetEGLImageKHR(napi_env env, napi_callback_info info);
+    
 };
 
 #endif // GLTEST_EGLIMAGEKHR_H

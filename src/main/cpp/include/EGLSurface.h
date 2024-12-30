@@ -14,8 +14,6 @@ public:
     static napi_ref cons;
     static napi_value JSConstructor(napi_env env, napi_callback_info info);
     static napi_value CreateEGLSurface(napi_env env, EGLSurface surface);
-    static EGLSurface GetEGLSurface(napi_env env, napi_value value);
-    static EGLSurface GetEGLSurface(napi_env env, napi_callback_info info);
     static napi_value JSGetCurrentSurface(napi_env env, napi_callback_info info);
     static napi_value JSSetAttribute(napi_env env, napi_callback_info info);
     static napi_value JSQuery(napi_env env, napi_callback_info info);

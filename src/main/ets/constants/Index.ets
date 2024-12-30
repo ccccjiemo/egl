@@ -6,6 +6,10 @@ import { EGLPlatform } from "./EGLPlatform";
 import { QueryStringNames } from "./QueryStringNames";
 import { READDRAW } from "./READDRAW";
 
+export { NativeBufferFormat } from './NativeBufferFormat'
+
+export { NativeBufferUsage } from './NativeBufferUsage'
+
 export { EGLApi, EGLBufferType, EGLConfigAttribute, EGLError, EGLPlatform, QueryStringNames, READDRAW }
 
 export const EGL_NO_SURFACE = undefined;

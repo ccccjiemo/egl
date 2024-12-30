@@ -34,8 +34,7 @@ public:
     static napi_value JSGetSyncAttrib(napi_env env, napi_callback_info info);
     static napi_value JSSwapInterval(napi_env env, napi_callback_info info);
     static napi_value CreateEGLDisplay(napi_env env, EGLDisplay display);
-    static EGLDisplay GetEGLDisplay(napi_env env, napi_value value);
-    static EGLDisplay GetEGLDisplay(napi_env env, napi_callback_info info);
+
 
     static napi_ref cons;
 };

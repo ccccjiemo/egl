@@ -17,6 +17,9 @@
 #define DefineFunction(name, func)                                                                                     \
     { name, nullptr, func, nullptr, nullptr, nullptr, napi_default, nullptr }
 
+#define DefineStaticFunction(name, func)                                                                                     \
+    { name, nullptr, func, nullptr, nullptr, nullptr, napi_static, nullptr }
+
 #define DefineSendableClass(env, exports, className, constructor, desc, ref)                                           \
     defineSendableClass(env, exports, className, constructor, desc, sizeof(desc) / sizeof(desc[0]), ref)
 
@@ -55,6 +58,18 @@
     napi_value _this = nullptr;                                                                                        \
     napi_get_cb_info(env, info, &argc, argv, &_this, nullptr);                                                         \
     return EGLBase::name(env, _this, argv[0], argv[1], argv[2], argv[3]);
+
+#define Argv1 argv[0]
+#define Argv2 Argv1, argv[1]
+#define Argv3 Argv2, argv[2]
+#define Argv4 Argv3, argv[3]
+#define Argv5 Argv4, argv[4]
+
+#define GenerateNAPI(name, count)                                                                                      \
+    size_t argc = count;                                                                                               \
+    napi_value argv[count]{nullptr};                                                                                   \
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);                                                        \
+    return EGLBase::name(env, Argv##count);
 
 
 static OHNativeWindow *getNativeWindow(napi_env env, napi_value value) {

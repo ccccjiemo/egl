@@ -32,20 +32,3 @@ napi_value StandardEGLImageKHR::CreateEGLImageKHR(napi_env env, EGLImageKHR imag
 
     return instance;
 }
-EGLImageKHR StandardEGLImageKHR::GetEGLImageKHR(napi_env env, napi_value value) {
-    napi_valuetype type;
-    napi_typeof(env, value, &type);
-    if (napi_undefined == type)
-        return nullptr;
-    void *result = nullptr;
-    if (napi_ok != napi_unwrap_sendable(env, value, &result)) {
-        napi_throw_error(env, "EGLImageKHR", "napi_unwrap_sendable failed");
-        return nullptr;
-    }
-    return static_cast<EGLImageKHR>(result);
-}
-EGLImageKHR StandardEGLImageKHR::GetEGLImageKHR(napi_env env, napi_callback_info info) {
-    napi_value _this = nullptr;
-    napi_get_cb_info(env, info, nullptr, nullptr, &_this, nullptr);
-    return GetEGLImageKHR(env, _this);
-}
