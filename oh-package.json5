@@ -1,6 +1,6 @@
 {
   "name": "@jemoc/egl",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "基于api12, 实现arkTS调用egl方法，可搭配@jemoc/gles进行opengl绘制",
   "keywords": [
     "egl"
