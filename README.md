@@ -77,8 +77,16 @@ buffer?.release();
 display?.destroyImageKHR(image)
 //OHNativeBuffer的操作需要开发者自己需求开发napi方法 buffer.id可以获取对象指针字符串，native侧将字符串转成指针
 ```
-
 ---
+
+#### 0.3.0
+支持sendable，补充EGLImage、EGLImageKHR、EGLSync、EGLSyncKHR
+
+EGL实例对象可以通过 napi_unwrap_sendable 方法获取对象指针
+
+NativeBuffer与EGLImageKHR参考[官方文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/xengine-kit-ai-spatial-upscaling-V5#section16380037114718)
+
+
 
 ### 可用API
 
