@@ -142,7 +142,7 @@ export namespace egl {
      * @param attrib_list 配置表
      * @returns
      */
-    createSurfaceWindow(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined;
+    createWindowSurface(config: EGLConfig, surfaceId: string, attrib_list?: number[]): EGLSurface | undefined;
 
     /**
      * 绑定线程与上下文
