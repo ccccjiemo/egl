@@ -1,3 +1,6 @@
+## [0.3.3] - 2025-01-26
+- 修复eglChooseConfig获取错误(没真机是真不知道自己写了个bug)
+
 ## [0.3.2] - 2024-12-30
 - 修复EGLDisplay下createWindowSurface与napi导出名不一致的错误
 ---

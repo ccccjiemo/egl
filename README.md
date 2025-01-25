@@ -7,8 +7,10 @@
 ```shell
 ohpm install @jemoc/egl
 ```
+<font color="red">使用了0.3.3以下版本(存在恶性bug)，请更新到最新版本，在x86模拟器下可能不受影响</font>
 
 ### 基础用法
+
 
 #### 0.2.0
 

@@ -42,6 +42,7 @@ napi_value JSEGLInitialize(napi_env env, napi_value dpy) {
 napi_value JSEGLChooseConfig(napi_env env, napi_value dpy, napi_value attrib_list, napi_value config_size) {
     EGLDisplay display = GetSendable<EGLDisplay>(env, dpy);
     EGLint *attrib_list_ = getEGLintList(env, attrib_list);
+
     napi_valuetype type;
     napi_typeof(env, config_size, &type);
     uint32_t count = 1;
@@ -49,15 +50,17 @@ napi_value JSEGLChooseConfig(napi_env env, napi_value dpy, napi_value attrib_lis
         napi_get_value_uint32(env, config_size, &count);
     }
 
-    EGLConfig *configs = new EGLConfig[count];
+    EGLConfig *configs = new EGLConfig[count]{nullptr};
     EGLint num_config = 0;
     if (!eglChooseConfig(display, attrib_list_, configs, count, &num_config)) {
         freeEGLIntList(&attrib_list_);
         return nullptr;
     }
-    delete[] configs;
+    int err = eglGetError();
     freeEGLIntList(&attrib_list_);
-    return StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
+    napi_value result = StandardEGLConfig::CreateEGLConfigList(env, configs, num_config);
+    delete[] configs;
+    return result;
 }
 napi_value JSEGLGetError(napi_env env) { return NapiCreateInt32(env, eglGetError()); }
 napi_value JSEGLCreateWindowSurface(napi_env env, napi_value dpy, napi_value config, napi_value surfaceId,
@@ -68,6 +71,8 @@ napi_value JSEGLCreateWindowSurface(napi_env env, napi_value dpy, napi_value con
     void *win = getNativeWindow(env, surfaceId);
     EGLint *attrib_list_ = getEGLintList(env, attrib_list);
     EGLSurface surface = eglCreateWindowSurface(display, config_, static_cast<EGLNativeWindowType>(win), attrib_list_);
+
+    int err = eglGetError();
     freeEGLIntList(&attrib_list_);
     return StandardEGLSurface::CreateEGLSurface(env, surface);
 }
